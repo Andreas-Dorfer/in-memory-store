@@ -14,3 +14,5 @@ type RestaurantEntity = {
     Name : NonEmptyString
     Menu : MenuItemEntity list
 }
+
+type FindRestaurantEntity = RestaurantId -> RestaurantEntity option
