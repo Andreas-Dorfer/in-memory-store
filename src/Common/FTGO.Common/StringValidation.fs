@@ -2,8 +2,8 @@
 
 module StringValidation =
     
-    let minLength min value =
-        if value |> String.length >= min then
-            Some value
+    let minLength min str =
+        if str |> String.length >= min then
+            Some str
         else
             None
