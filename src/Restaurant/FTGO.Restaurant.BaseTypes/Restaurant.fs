@@ -1,7 +1,10 @@
 ﻿namespace FTGO.Restaurant.BaseTypes
 
-type RestaurantId = private RestaurantId of int64
+open FTGO.Common
+
+[<Struct>]
+type RestaurantId = private RestaurantId of string
 
 module RestaurantId =
 
-    let create = RestaurantId
+    let create = StringValidation.minLength 1 >> Option.map RestaurantId

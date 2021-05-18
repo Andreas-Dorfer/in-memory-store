@@ -1,15 +1,16 @@
 ﻿namespace FTGO.Restaurant.Entities
 
+open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 
 type MenuItem = {
     Id : MenuItemId
-    Name : string
+    Name : NonEmptyString
     Price : decimal
 }
 
 type RestaurantEntity = {
     Id :  RestaurantId
-    Name : string
+    Name : NonEmptyString
     Menu : MenuItem list
 }

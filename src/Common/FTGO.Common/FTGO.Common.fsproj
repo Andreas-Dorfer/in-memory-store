@@ -6,12 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="MenuItem.fs" />
-    <Compile Include="Restaurant.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\FTGO.Common.BaseTypes\FTGO.Common.BaseTypes.fsproj" />
+    <Compile Include="StringValidation.fs" />
   </ItemGroup>
 
   <ItemGroup>
