@@ -15,4 +15,10 @@ type RestaurantEntity = {
     Menu : MenuItemEntity list
 }
 
+type CreateRestaurantEntityArgs = {
+    Name : NonEmptyString
+}
+
+type CreateRestaurantEntity = CreateRestaurantEntityArgs -> Async<RestaurantEntity>
+
 type FindRestaurantEntity = RestaurantId -> Async<RestaurantEntity option>
