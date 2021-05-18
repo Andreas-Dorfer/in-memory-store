@@ -14,7 +14,3 @@ type RestaurantEntity = {
     Name : NonEmptyString
     Menu : MenuItemEntity list
 }
-
-type CreateRestaurantEntityArgs = {
-    Name : NonEmptyString
-}
