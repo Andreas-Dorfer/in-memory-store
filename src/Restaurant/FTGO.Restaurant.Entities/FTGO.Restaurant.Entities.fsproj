@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RestaurantEntity.fs" />
+    <Compile Include="RestaurantAggregate.fs" />
   </ItemGroup>
 
   <ItemGroup>

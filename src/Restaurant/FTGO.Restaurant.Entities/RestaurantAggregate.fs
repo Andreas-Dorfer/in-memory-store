@@ -3,7 +3,7 @@
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 
-type MenuItem = {
+type MenuItemEntity = {
     Id : MenuItemId
     Name : NonEmptyString
     Price : decimal
@@ -12,5 +12,5 @@ type MenuItem = {
 type RestaurantEntity = {
     Id :  RestaurantId
     Name : NonEmptyString
-    Menu : MenuItem list
+    Menu : MenuItemEntity list
 }
