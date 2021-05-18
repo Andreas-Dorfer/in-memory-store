@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="MenuItem.fs" />
-    <Compile Include="Restaurant.fs" />
+    <Compile Include="MenuItemTypes.fs" />
+    <Compile Include="RestaurantTypes.fs" />
   </ItemGroup>
 
   <ItemGroup>

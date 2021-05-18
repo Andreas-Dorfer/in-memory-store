@@ -10,4 +10,8 @@ module Restaurant =
             Id = entity.Id
             Name = entity.Name
         }
-        findEntity >> Option.map toRestaurant
+        
+        fun id -> async {
+            let! entity = id |> findEntity
+            return entity |> Option.map toRestaurant
+        }
