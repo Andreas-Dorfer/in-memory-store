@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Tests.fs" />
+    <Compile Include="CreateTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -20,6 +20,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FTGO.Restaurant\FTGO.Restaurant.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
