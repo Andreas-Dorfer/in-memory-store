@@ -9,6 +9,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant.Entities", 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant.BaseTypes", "Restaurant\FTGO.Restaurant.BaseTypes\FTGO.Restaurant.BaseTypes.fsproj", "{E01FFD26-931E-4C8C-8C29-5049C3659129}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant", "Restaurant\FTGO.Restaurant\FTGO.Restaurant.fsproj", "{2377FB32-7A87-4E95-B9FD-693F2A497DA9}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant.UseCases", "Restaurant\FTGO.Restaurant.UseCases\FTGO.Restaurant.UseCases.fsproj", "{51066A21-C817-411F-90D6-A82D793B8344}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{E01FFD26-931E-4C8C-8C29-5049C3659129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E01FFD26-931E-4C8C-8C29-5049C3659129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E01FFD26-931E-4C8C-8C29-5049C3659129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2377FB32-7A87-4E95-B9FD-693F2A497DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2377FB32-7A87-4E95-B9FD-693F2A497DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2377FB32-7A87-4E95-B9FD-693F2A497DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2377FB32-7A87-4E95-B9FD-693F2A497DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51066A21-C817-411F-90D6-A82D793B8344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51066A21-C817-411F-90D6-A82D793B8344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51066A21-C817-411F-90D6-A82D793B8344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51066A21-C817-411F-90D6-A82D793B8344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +42,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9024424E-D93A-49D5-9A4C-D4FC0311D975} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
 		{E01FFD26-931E-4C8C-8C29-5049C3659129} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
+		{2377FB32-7A87-4E95-B9FD-693F2A497DA9} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
+		{51066A21-C817-411F-90D6-A82D793B8344} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3CE3EAF-CB28-49AE-88A8-6DAA85B320B7}
