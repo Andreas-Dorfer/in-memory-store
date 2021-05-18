@@ -2,6 +2,7 @@
 
 open FTGO.Restaurant.Dependencies
 open FTGO.Restaurant.Entities
+open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
 
 module Restaurant =
@@ -12,9 +13,14 @@ module Restaurant =
     }
 
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
-        let toCreateEntityArgs args : CreateRestaurantEntityArgs = {
-            Name = args.Name
-        }
+        let toCreateEntityArgs args =
+            let createEntityArgs : CreateRestaurantEntityArgs = {
+                Name = args.Name
+            }
+            let createdEvent : RestaurantCreatedEvent = {
+                Name = args.Name
+            }
+            (createEntityArgs, createdEvent)
 
         fun args -> async {
             let! entity = args |> toCreateEntityArgs |> createEntity
