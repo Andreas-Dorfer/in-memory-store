@@ -1,5 +1,6 @@
 ﻿namespace FTGO.Restaurant
 
+open FTGO.Restaurant.Dependencies
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant.UseCases
 
