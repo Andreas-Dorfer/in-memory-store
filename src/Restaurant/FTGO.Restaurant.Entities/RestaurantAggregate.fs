@@ -11,7 +11,7 @@ type MenuItemEntity = {
 }
 
 type RestaurantEntity = {
-    Id :  RestaurantId
+    Id :  EntityId<RestaurantId>
     Name : NonEmptyString
     Menu : MenuItemEntity list
 }

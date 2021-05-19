@@ -4,7 +4,7 @@ open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 
 type Restaurant = {
-    Id : RestaurantId
+    Id : EntityId<RestaurantId>
     Name : NonEmptyString
 }
 
