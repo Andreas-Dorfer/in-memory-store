@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FTGO.Restaurant.BaseTypes\FTGO.Restaurant.BaseTypes.fsproj" />
+    <ProjectReference Include="..\FTGO.Restaurant.Events\FTGO.Restaurant.Events.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

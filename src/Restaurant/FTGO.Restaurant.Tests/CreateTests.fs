@@ -9,7 +9,6 @@ open FTGO.Restaurant.BaseTypes
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
-open FTGO.Restaurant.Dependencies
 open FTGO.Restaurant
 
 [<TestClass>]
