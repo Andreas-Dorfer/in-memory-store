@@ -1,11 +1,11 @@
-﻿namespace FTGO.Restaurant.Conversions
+﻿namespace FTGO.Restaurant
+
+open FTGO.Restaurant.Entities
+open FTGO.Restaurant.UseCases
 
 module Restaurant =
 
-    type private Entity = FTGO.Restaurant.Entities.RestaurantEntity
-    type private UseCase = FTGO.Restaurant.UseCases.Restaurant
-
-    let fromEntity (entity : Entity) : UseCase = {
+    let fromEntity (entity : RestaurantEntity) : Restaurant = {
         Id = entity.Id
         Name = entity.Name
     }

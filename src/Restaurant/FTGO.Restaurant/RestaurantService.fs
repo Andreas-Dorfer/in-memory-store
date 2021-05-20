@@ -3,7 +3,6 @@
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
-open FTGO.Restaurant.Conversions
 open FTGO.Common.Operators.OptionOperators
 
 module RestaurantService =
