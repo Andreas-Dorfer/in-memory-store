@@ -4,10 +4,21 @@ open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 open FTGO.Restaurant.Events
 
+type CreateMenuItemEntityArgs = {
+    Name : NonEmptyString
+    Price : decimal
+}
+
 type MenuItemEntity = {
     Id : MenuItemId
     Name : NonEmptyString
     Price : decimal
+}
+
+
+type CreateRestaurantEntityArgs = {
+    Name : NonEmptyString
+    Menu : CreateMenuItemEntityArgs list
 }
 
 type RestaurantEntity = {
@@ -16,9 +27,6 @@ type RestaurantEntity = {
     Menu : MenuItemEntity list
 }
 
-type CreateRestaurantEntityArgs = {
-    Name : NonEmptyString
-}
 
 type CreateRestaurantEntity = (CreateRestaurantEntityArgs * RestaurantCreatedEvent) -> Async<RestaurantEntity>
 

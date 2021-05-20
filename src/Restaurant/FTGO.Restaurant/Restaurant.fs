@@ -16,6 +16,7 @@ module Restaurant =
         let toCreateEntityArgs args =
             let createArgs : CreateRestaurantEntityArgs = {
                 Name = args.Name
+                Menu = []
             }
             let createdEvent : RestaurantCreatedEvent = {
                 Name = args.Name
