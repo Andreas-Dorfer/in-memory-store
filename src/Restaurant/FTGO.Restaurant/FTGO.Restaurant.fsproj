@@ -8,7 +8,7 @@
   <ItemGroup>
     <Compile Include="Conversions\CreateRestaurantArgs.fs" />
     <Compile Include="Conversions\Restaurant.fs" />
-    <Compile Include="Restaurant.fs" />
+    <Compile Include="RestaurantService.fs" />
   </ItemGroup>
 
   <ItemGroup>

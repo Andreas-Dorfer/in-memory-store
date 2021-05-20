@@ -19,17 +19,17 @@ type CreateTests () =
         async {
             let restaurants = List<_> ()
             let events = Queue<RestaurantCreatedEvent> ()
-            let createEntity (args : CreateRestaurantEntityArgs, event) = async {
+            let createEntity entityCreated (args : CreateRestaurantEntityArgs) = async {
                 let restaurant = {
                     Id = EntityId (Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get, "1")
                     Name = args.Name
                     Menu = []
                 }
                 restaurant |> restaurants.Add
-                event |> events.Enqueue
+                restaurant |> entityCreated |> events.Enqueue
                 return restaurant
             }
-            let createRestaurant = Restaurant.create createEntity
+            let createRestaurant = RestaurantService.create createEntity
             
             let expectedName = NonEmptyString.create "My Restaurant" |> Option.get
             let args : CreateRestaurantArgs = { Name = expectedName }
