@@ -1,7 +1,7 @@
 ﻿namespace FTGO.Restaurant.BaseTypes
 
 open FTGO.Common
-open FTGO.Common.Operators
+open FTGO.Common.Operators.OptionOperators
 
 [<Struct>]
 type RestaurantId = private RestaurantId of string

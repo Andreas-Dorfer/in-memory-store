@@ -1,8 +1,11 @@
-﻿namespace FTGO.Restaurant
+﻿namespace FTGO.Restaurant.Conversions
 
 module CreateRestaurantArgs =
 
-    let toCreateRestaurantEntityArgs (args : UseCases.CreateRestaurantArgs) : Entities.CreateRestaurantEntityArgs = {
+    type private UseCaseArgs = FTGO.Restaurant.UseCases.CreateRestaurantArgs
+    type private EntityArgs = FTGO.Restaurant.Entities.CreateRestaurantEntityArgs
+
+    let toEntityArgs (args : UseCaseArgs) : EntityArgs = {
         Name = args.Name
         Menu = []
     }

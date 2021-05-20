@@ -2,7 +2,6 @@
 
 open System.Diagnostics
 
-[<AutoOpen>]
 [<DebuggerStepThrough>]
 module OptionOperators =
 
