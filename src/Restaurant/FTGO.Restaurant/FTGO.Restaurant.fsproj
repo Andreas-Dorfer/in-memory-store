@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Conversions\CreateRestaurantArgs.fs" />
     <Compile Include="Restaurant.fs" />
   </ItemGroup>
 

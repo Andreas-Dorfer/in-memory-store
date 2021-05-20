@@ -13,15 +13,13 @@ module Restaurant =
     }
 
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
-        let toCreateEntityArgs args =
-            let createArgs : CreateRestaurantEntityArgs = {
-                Name = args.Name
-                Menu = []
+        let toCreateEntityArgs createArgs =
+            let createEntityArgs = createArgs |> CreateRestaurantArgs.toCreateRestaurantEntityArgs
+
+            let created : RestaurantCreatedEvent = {
+                Name = createArgs.Name
             }
-            let createdEvent : RestaurantCreatedEvent = {
-                Name = args.Name
-            }
-            createArgs, createdEvent
+            createEntityArgs, created
 
         fun args -> async {
             let! entity = args |> toCreateEntityArgs |> createEntity
