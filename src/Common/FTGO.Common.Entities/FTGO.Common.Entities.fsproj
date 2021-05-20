@@ -6,12 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RestaurantEntity.fs" />
+    <Compile Include="Entity.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\FTGO.Common.Entities\FTGO.Common.Entities.fsproj" />
-    <ProjectReference Include="..\FTGO.Restaurant.Events\FTGO.Restaurant.Events.fsproj" />
+    <ProjectReference Include="..\FTGO.Common.BaseTypes\FTGO.Common.BaseTypes.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
