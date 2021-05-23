@@ -7,7 +7,7 @@ open FTGO.Common.Operators.OptionOperators
 
 module RestaurantService =
 
-    let private entityCreated : RestaurantEntityCreated =
+    let private entityCreated : CreateRestaurantEntityCreatedEvent =
         fun entity -> {
             Name = entity.Name
         }

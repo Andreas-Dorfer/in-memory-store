@@ -21,7 +21,7 @@ type CreateTests () =
             let events = Queue<RestaurantCreatedEvent> ()
             let createEntity entityCreated (args : CreateRestaurantEntityArgs) = async {
                 let restaurant = {
-                    Id = EntityId (Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get, "1")
+                    Id = EntityId (Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get, ETag "1")
                     Name = args.Name
                     Menu = []
                 }

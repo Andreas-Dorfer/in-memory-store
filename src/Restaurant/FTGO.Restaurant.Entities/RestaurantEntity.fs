@@ -32,8 +32,8 @@ type RestaurantEntity =
         member this.Id = this.Id
 
 
-type RestaurantEntityCreated = RestaurantEntity -> RestaurantCreatedEvent
+type CreateRestaurantEntityCreatedEvent = RestaurantEntity -> RestaurantCreatedEvent
 
-type CreateRestaurantEntity = RestaurantEntityCreated -> CreateRestaurantEntityArgs -> Async<RestaurantEntity>
+type CreateRestaurantEntity = CreateRestaurantEntityCreatedEvent -> CreateRestaurantEntityArgs -> Async<RestaurantEntity>
 
 type FindRestaurantEntity = RestaurantId -> Async<RestaurantEntity option>
