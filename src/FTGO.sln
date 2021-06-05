@@ -27,7 +27,11 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FTGO.Common.Entities", "Com
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Entity Adapter", "SQL Entity Adapter", "{58899410-C44C-4177-A69D-A8829661E005}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant.SqlEntities", "Restaurant\SQL Entity Adapter\FTGO.Restaurant.SqlEntities\FTGO.Restaurant.SqlEntities.fsproj", "{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FTGO.Restaurant.SqlEntities", "Restaurant\SQL Entity Adapter\FTGO.Restaurant.SqlEntities\FTGO.Restaurant.SqlEntities.fsproj", "{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AD", "AD", "{5F45EB19-7B0F-4213-963F-23D78895CA3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.Messaging.Cosmos", "AD\AD.Messaging.Cosmos\AD.Messaging.Cosmos.csproj", "{3D849590-FD9D-4842-B350-6BE6A054A3E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,10 @@ Global
 		{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D849590-FD9D-4842-B350-6BE6A054A3E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D849590-FD9D-4842-B350-6BE6A054A3E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D849590-FD9D-4842-B350-6BE6A054A3E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D849590-FD9D-4842-B350-6BE6A054A3E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,7 @@ Global
 		{9463F6F9-7879-488D-89C1-5CF661126290} = {5C251F31-0DB7-4A11-BB8C-741A2FA6C9C0}
 		{58899410-C44C-4177-A69D-A8829661E005} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
 		{4B86AFE6-5E39-43B9-B153-50F9AEE7AB3E} = {58899410-C44C-4177-A69D-A8829661E005}
+		{3D849590-FD9D-4842-B350-6BE6A054A3E5} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3CE3EAF-CB28-49AE-88A8-6DAA85B320B7}
