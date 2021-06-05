@@ -3,7 +3,6 @@
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
-open FTGO.Common.Operators.OptionOperators
 
 module RestaurantService =
 
@@ -22,5 +21,5 @@ module RestaurantService =
     let find (findEntity : FindRestaurantEntity) : FindRestaurant =
         fun id -> async {
             let! entity = id |> findEntity
-            return entity |>> Restaurant.fromEntity
+            return entity |> Option.map Restaurant.fromEntity
         }
