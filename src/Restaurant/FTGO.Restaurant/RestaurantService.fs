@@ -17,7 +17,7 @@ module RestaurantService =
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
         fun args -> async {
             let entity = {
-                Id = Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get
+                Id = Guid.NewGuid() |> RestaurantId.create |> Option.get
                 Name = args.Name
                 Menu = [] }
             let created : RestaurantCreatedEvent = {
