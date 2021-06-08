@@ -4,6 +4,7 @@ open FTGO.Common
 
 [<Struct>]
 type NonEmptyString = private NonEmptyString of string
+    with member this.Value = let (NonEmptyString value) = this in value
 
 module NonEmptyString =
 

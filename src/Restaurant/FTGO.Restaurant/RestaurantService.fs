@@ -21,7 +21,8 @@ module RestaurantService =
                 Name = args.Name
                 Menu = [] }
             let created : RestaurantCreatedEvent = {
-                Id = entity.Id
+                Id = Guid.NewGuid()
+                RestaurantId = entity.Id
                 Name = entity.Name
             }
             let! eTag = (entity, created) |> createEntity
