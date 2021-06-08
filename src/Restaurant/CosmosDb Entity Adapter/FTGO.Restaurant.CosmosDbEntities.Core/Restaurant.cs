@@ -1,5 +1,6 @@
 ﻿using AD.Messaging.Cosmos;
 using Microsoft.Azure.Cosmos;
+using System;
 using System.Threading.Tasks;
 
 namespace FTGO.Restaurant.CosmosDbEntities.Core
@@ -25,5 +26,8 @@ namespace FTGO.Restaurant.CosmosDbEntities.Core
 
         public async Task<Restaurant> Create(Restaurant entity, RestaurantCreated @event) =>
             await container.CreateEntityAsync(entity, @event);
+
+        public async Task<Restaurant> Read(Guid id) =>
+            await container.ReadEntityAsync<Restaurant>(id.ToString());
     }
 }

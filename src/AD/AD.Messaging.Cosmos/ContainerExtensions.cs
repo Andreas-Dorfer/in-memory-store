@@ -20,5 +20,12 @@ namespace AD.Messaging.Cosmos
 
             return response.GetOperationResultAtIndex<TEntity>(0).Resource;
         }
+
+        public static async Task<TEntity> ReadEntityAsync<TEntity>(this Container container, string id)
+            where TEntity : Entity
+        {
+            var response = await container.ReadItemAsync<TEntity>(id, new(id));
+            return response.Resource;
+        }
     }
 }
