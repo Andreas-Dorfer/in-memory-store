@@ -4,7 +4,7 @@ open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 
 type Restaurant = {
-    Id : EntityId<RestaurantId>
+    Id : Versioned<RestaurantId>
     Name : NonEmptyString
 }
 
@@ -14,4 +14,4 @@ type CreateRestaurantArgs = {
 
 type CreateRestaurant = CreateRestaurantArgs -> Async<Restaurant>
 
-type FindRestaurant = RestaurantId -> Async<Restaurant option>
+type ReadRestaurant = RestaurantId -> Async<Restaurant option>

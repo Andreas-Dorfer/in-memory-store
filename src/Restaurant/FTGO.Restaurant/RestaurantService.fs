@@ -1,25 +1,38 @@
 ﻿namespace FTGO.Restaurant
 
+open System
+open FTGO.Common.BaseTypes
+open FTGO.Restaurant.BaseTypes
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
 
 module RestaurantService =
 
-    let private entityCreated : CreateRestaurantEntityCreatedEvent =
-        fun entity -> {
-            Name = entity.Name
-        }
-
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
-        let createEntity = createEntity entityCreated
         fun args -> async {
-            let! entity = args |> CreateRestaurantArgs.toEntityArgs |> createEntity
-            return entity |> Restaurant.fromEntity
+            let entity = {
+                Id = Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get
+                Name = args.Name
+                Menu = [] }
+            let event : RestaurantCreatedEvent = {
+                Id = entity.Id
+                Name = entity.Name
+            }
+            let! Versioned (entity, eTag) = (entity, event) |> createEntity
+            return {
+                Id = Versioned (entity.Id, eTag)
+                Name = entity.Name
+            }
         }
 
-    let find (findEntity : FindRestaurantEntity) : FindRestaurant =
+    let read (readEntity : ReadRestaurantEntity) : ReadRestaurant =
         fun id -> async {
-            let! entity = id |> findEntity
-            return entity |> Option.map Restaurant.fromEntity
+            let! result = id |> readEntity
+            return
+                result
+                |> Option.map (fun (Versioned (entity, eTag)) -> {
+                    Id = Versioned (entity.Id, eTag)
+                    Name = entity.Name
+                })
         }

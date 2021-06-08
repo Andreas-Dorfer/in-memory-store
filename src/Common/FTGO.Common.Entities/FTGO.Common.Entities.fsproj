@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Entity.fs" />
+    <Compile Include="Versioned.fs" />
   </ItemGroup>
 
   <ItemGroup>

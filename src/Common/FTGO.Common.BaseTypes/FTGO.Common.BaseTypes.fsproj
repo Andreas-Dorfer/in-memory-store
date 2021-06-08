@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Compile Include="NonEmptyString.fs" />
-    <Compile Include="EntityId.fs" />
+    <Compile Include="ETag.fs" />
   </ItemGroup>
 
   <ItemGroup>

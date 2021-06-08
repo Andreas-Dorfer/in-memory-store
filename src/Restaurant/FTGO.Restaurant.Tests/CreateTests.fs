@@ -1,12 +1,9 @@
 namespace FTGO.Restaurant.Tests
 
-open System
 open System.Collections.Generic
 open System.Threading.Tasks
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open FTGO.Common.BaseTypes
-open FTGO.Restaurant.BaseTypes
-open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
 open FTGO.Restaurant.UseCases
 open FTGO.Restaurant
@@ -19,15 +16,10 @@ type CreateTests () =
         async {
             let restaurants = List<_> ()
             let events = Queue<RestaurantCreatedEvent> ()
-            let createEntity entityCreated (args : CreateRestaurantEntityArgs) = async {
-                let restaurant = {
-                    Id = EntityId (Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get, ETag "1")
-                    Name = args.Name
-                    Menu = []
-                }
+            let createEntity (restaurant, entityCreated) = async {
                 restaurant |> restaurants.Add
-                restaurant |> entityCreated |> events.Enqueue
-                return restaurant
+                entityCreated |> events.Enqueue
+                return Versioned (restaurant, ETag "1")
             }
             let createRestaurant = RestaurantService.create createEntity
             

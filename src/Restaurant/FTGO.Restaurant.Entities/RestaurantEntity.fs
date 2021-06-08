@@ -2,13 +2,7 @@
 
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
-open FTGO.Common.Entities
 open FTGO.Restaurant.Events
-
-type CreateMenuItemEntityArgs = {
-    Name : NonEmptyString
-    Price : decimal
-}
 
 type MenuItemEntity = {
     Id : MenuItemId
@@ -16,24 +10,12 @@ type MenuItemEntity = {
     Price : decimal
 }
 
-
-type CreateRestaurantEntityArgs = {
+type RestaurantEntity = {
+    Id : RestaurantId
     Name : NonEmptyString
-    Menu : CreateMenuItemEntityArgs list
+    Menu : MenuItemEntity list
 }
 
-type RestaurantEntity =
-    {
-        Id :  EntityId<RestaurantId>
-        Name : NonEmptyString
-        Menu : MenuItemEntity list
-    }
-    interface IEntity<RestaurantId> with
-        member this.Id = this.Id
+type CreateRestaurantEntity = RestaurantEntity * RestaurantCreatedEvent -> Async<Versioned<RestaurantEntity>>
 
-
-type CreateRestaurantEntityCreatedEvent = RestaurantEntity -> RestaurantCreatedEvent
-
-type CreateRestaurantEntity = CreateRestaurantEntityCreatedEvent -> CreateRestaurantEntityArgs -> Async<RestaurantEntity>
-
-type FindRestaurantEntity = RestaurantId -> Async<RestaurantEntity option>
+type ReadRestaurantEntity = RestaurantId -> Async<Versioned<RestaurantEntity> option>
