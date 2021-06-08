@@ -19,7 +19,7 @@ type CreateTests () =
             let createEntity (restaurant, entityCreated) = async {
                 restaurant |> restaurants.Add
                 entityCreated |> events.Enqueue
-                return Versioned (restaurant, ETag "1")
+                return ETag "1"
             }
             let createRestaurant = RestaurantService.create createEntity
             

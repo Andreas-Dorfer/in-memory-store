@@ -3,11 +3,16 @@
 open System
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
-open FTGO.Restaurant.Entities
 open FTGO.Restaurant.Events
+open FTGO.Restaurant.Entities
 open FTGO.Restaurant.UseCases
 
 module RestaurantService =
+
+    let private fromEntity (Versioned (entity : RestaurantEntity, eTag)) = {
+        Id = Versioned (entity.Id, eTag)
+        Name = entity.Name
+    }
 
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
         fun args -> async {
@@ -15,24 +20,16 @@ module RestaurantService =
                 Id = Guid.NewGuid().ToString() |> RestaurantId.create |> Option.get
                 Name = args.Name
                 Menu = [] }
-            let event : RestaurantCreatedEvent = {
+            let created : RestaurantCreatedEvent = {
                 Id = entity.Id
                 Name = entity.Name
             }
-            let! Versioned (entity, eTag) = (entity, event) |> createEntity
-            return {
-                Id = Versioned (entity.Id, eTag)
-                Name = entity.Name
-            }
+            let! eTag = (entity, created) |> createEntity
+            return Versioned (entity, eTag) |> fromEntity
         }
 
     let read (readEntity : ReadRestaurantEntity) : ReadRestaurant =
         fun id -> async {
-            let! result = id |> readEntity
-            return
-                result
-                |> Option.map (fun (Versioned (entity, eTag)) -> {
-                    Id = Versioned (entity.Id, eTag)
-                    Name = entity.Name
-                })
+            let! entity = id |> readEntity
+            return entity |> Option.map fromEntity
         }
