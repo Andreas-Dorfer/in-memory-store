@@ -1,5 +1,6 @@
 ﻿namespace FTGO.Restaurant.CosmosDbEntities
 
+open System
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 open FTGO.Restaurant.Entities
@@ -12,11 +13,11 @@ module RestaurantAggregateAdapter =
         fun (restaurant, created) -> async {
 
             let entity = Restaurant ()
-            entity.Id <- restaurant.Id.Value
+            entity.Id <- restaurant.Id.Value.ToString()
             entity.Name <- restaurant.Name.Value
 
             let event = RestaurantCreated ()
-            event.Id <- created.Id
+            event.Id <- created.Id.ToString()
             event.Name <- created.Name.Value
 
             let! entity = (entity, event) |> dataAccess.Create |> Async.AwaitTask
@@ -34,7 +35,7 @@ module RestaurantAggregateAdapter =
                 |> Option.ofObj
                 |> Option.map (fun entity ->
                     let restaurant = {
-                        Id = entity.Id |> RestaurantId.create |> Option.get
+                        Id = entity.Id |> Guid.Parse |> RestaurantId.create |> Option.get
                         Name = entity.Name |> NonEmptyString.create |> Option.get
                         Menu = []
                     }

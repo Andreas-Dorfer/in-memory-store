@@ -5,17 +5,17 @@ namespace AD.Messaging.Cosmos
 {
     public static class ContainerExtensions
     {
-        public static async Task<TEntity> CreateEntityAsync<TEntity, TEvent>(this Container container, TEntity entity, TEvent @event)
+        public static async Task<TEntity> CreateEntityAsync<TEntity, TMessage>(this Container container, TEntity entity, TMessage message)
             where TEntity : Entity
-            where TEvent : Event
+            where TMessage : Message
         {
             var entityId = entity.Id;
-            @event.EntityId = entityId;
+            message.EntityId = entityId;
 
             var response = await
-                container.CreateTransactionalBatch(new(entityId.ToString()))
+                container.CreateTransactionalBatch(partitionKey: new(entityId))
                 .CreateItem(entity)
-                .CreateItem(@event)
+                .CreateItem(message)
                 .ExecuteAsync();
 
             return response.GetOperationResultAtIndex<TEntity>(0).Resource;
@@ -24,7 +24,7 @@ namespace AD.Messaging.Cosmos
         public static async Task<TEntity> ReadEntityAsync<TEntity>(this Container container, string id)
             where TEntity : Entity
         {
-            var response = await container.ReadItemAsync<TEntity>(id, new(id));
+            var response = await container.ReadItemAsync<TEntity>(id, partitionKey: new(id));
             return response.Resource;
         }
     }

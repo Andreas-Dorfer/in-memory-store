@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace AD.Messaging.Cosmos
 {
@@ -8,13 +7,13 @@ namespace AD.Messaging.Cosmos
         public const string PartitionKey = "_entityId";
 
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonProperty("_etag")]
         public string? ETag { get; set; }
 
         [JsonProperty(PartitionKey)]
-        public Guid EntityId => Id;
+        public string? EntityId => Id;
 
         [JsonProperty("_entityType")]
         public const string EntityType = "entity";

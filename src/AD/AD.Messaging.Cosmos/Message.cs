@@ -3,10 +3,10 @@ using System;
 
 namespace AD.Messaging.Cosmos
 {
-    public abstract class Event
+    public abstract class Message
     {
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonProperty("_etag")]
         public string? ETag { get; set; }
@@ -15,9 +15,9 @@ namespace AD.Messaging.Cosmos
         public DateTime? TimeStamp { get; set; }
 
         [JsonProperty(Entity.PartitionKey)]
-        public Guid EntityId { get; set; }
+        public string? EntityId { get; set; }
 
         [JsonProperty("_entityType")]
-        public const string EntityType = "event";
+        public const string EntityType = "message";
     }
 }

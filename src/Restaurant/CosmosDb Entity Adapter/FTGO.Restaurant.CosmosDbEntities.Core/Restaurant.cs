@@ -10,7 +10,7 @@ namespace FTGO.Restaurant.CosmosDbEntities.Core
         public string Name { get; set; } = null!;
     }
 
-    public class RestaurantCreated : Event
+    public class RestaurantCreated : Message
     {
         public string Name { get; set; } = null!;
     }
