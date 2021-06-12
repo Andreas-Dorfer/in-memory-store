@@ -27,6 +27,11 @@ module RestaurantService =
             Id = Guid.NewGuid()
             RestaurantId = restaurant.Id
             Name = restaurant.Name
+            Menu = restaurant.Menu |> List.map (fun menuItem -> {
+                Id = menuItem.Id
+                Name = menuItem.Name
+                Price = menuItem.Price
+            })
         }
         restaurant, created
 
