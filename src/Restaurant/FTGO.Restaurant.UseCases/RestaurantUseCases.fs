@@ -3,12 +3,18 @@
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 
-type Restaurant = {
-    Id : Versioned<RestaurantId>
+type CreateMenuItemArgs = {
     Name : NonEmptyString
+    Price : decimal
 }
 
 type CreateRestaurantArgs = {
+    Name : NonEmptyString
+    Menu : CreateMenuItemArgs list
+}
+
+type Restaurant = {
+    Id : Versioned<RestaurantId>
     Name : NonEmptyString
 }
 

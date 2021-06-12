@@ -24,7 +24,7 @@ type CreateTests () =
             let createRestaurant = RestaurantService.create createEntity
             
             let expectedName = NonEmptyString.create "My Restaurant" |> Option.get
-            let args : CreateRestaurantArgs = { Name = expectedName }
+            let args : CreateRestaurantArgs = { Name = expectedName; Menu = [] }
 
             let! restaurant = args |> createRestaurant
             

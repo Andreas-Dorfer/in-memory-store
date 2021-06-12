@@ -9,24 +9,36 @@ open FTGO.Restaurant.UseCases
 
 module RestaurantService =
 
+    let private newMenuItemId = Guid.NewGuid >> MenuItemId.create >> Option.get
     let private newRestaurantId = Guid.NewGuid >> RestaurantId.create >> Option.get
+
+    let private createNewMenuItem (args : CreateMenuItemArgs) = {
+        Id = newMenuItemId ()
+        Name = args.Name
+        Price = args.Price
+    }
+
+    let private createNewRestaurant (args : CreateRestaurantArgs) =
+        let restaurant = {
+            Id = newRestaurantId ()
+            Name = args.Name
+            Menu = args.Menu |> List.map createNewMenuItem }
+        let created : RestaurantCreatedEvent = {
+            Id = Guid.NewGuid()
+            RestaurantId = restaurant.Id
+            Name = restaurant.Name
+        }
+        restaurant, created
 
     let private fromEntity (Versioned (entity : RestaurantEntity, eTag)) = {
         Id = Versioned (entity.Id, eTag)
         Name = entity.Name
     }
 
+
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
         fun args -> async {
-            let entity = {
-                Id = newRestaurantId ()
-                Name = args.Name
-                Menu = [] }
-            let created : RestaurantCreatedEvent = {
-                Id = Guid.NewGuid()
-                RestaurantId = entity.Id
-                Name = entity.Name
-            }
+            let (entity, created) = args |> createNewRestaurant
             let! eTag = (entity, created) |> createEntity
             return Versioned (entity, eTag) |> fromEntity
         }
