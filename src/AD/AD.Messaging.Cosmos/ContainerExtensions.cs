@@ -13,7 +13,7 @@ namespace AD.Messaging.Cosmos
             message.EntityId = entityId;
 
             var response = await
-                container.CreateTransactionalBatch(partitionKey: new(entityId))
+                container.CreateTransactionalBatch(new PartitionKey(entityId))
                 .CreateItem(entity)
                 .CreateItem(message)
                 .ExecuteAsync();
@@ -24,7 +24,7 @@ namespace AD.Messaging.Cosmos
         public static async Task<TEntity> ReadEntityAsync<TEntity>(this Container container, string id)
             where TEntity : Entity
         {
-            var response = await container.ReadItemAsync<TEntity>(id, partitionKey: new(id));
+            var response = await container.ReadItemAsync<TEntity>(id, new PartitionKey(id));
             return response.Resource;
         }
     }
