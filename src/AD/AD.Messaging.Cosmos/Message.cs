@@ -17,7 +17,7 @@ namespace AD.Messaging.Cosmos
         [JsonProperty(Entity.PartitionKey)]
         public string? EntityId { get; set; }
 
-        [JsonProperty("_entityType")]
+        [JsonProperty(Entity.DiscriminatorKey)]
         public const string EntityType = "message";
     }
 }

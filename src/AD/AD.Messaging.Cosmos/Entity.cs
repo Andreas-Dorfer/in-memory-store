@@ -5,6 +5,7 @@ namespace AD.Messaging.Cosmos
     public abstract class Entity
     {
         public const string PartitionKey = "_entityId";
+        public const string DiscriminatorKey = "_entityType";
 
         [JsonProperty("id")]
         public string? Id { get; set; }
@@ -15,7 +16,7 @@ namespace AD.Messaging.Cosmos
         [JsonProperty(PartitionKey)]
         public string? EntityId => Id;
 
-        [JsonProperty("_entityType")]
+        [JsonProperty(DiscriminatorKey)]
         public const string EntityType = "entity";
     }
 }
