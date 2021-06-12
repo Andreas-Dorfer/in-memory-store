@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities\FTGO.Restaurant.CosmosDbEntities.fsproj" />
     <ProjectReference Include="..\FTGO.Restaurant\FTGO.Restaurant.fsproj" />
   </ItemGroup>
 
