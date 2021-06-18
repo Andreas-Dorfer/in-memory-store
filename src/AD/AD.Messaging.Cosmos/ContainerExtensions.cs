@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
-using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 using static Microsoft.Azure.Cosmos.Container;
@@ -31,67 +31,15 @@ namespace AD.Messaging.Cosmos
             return response.Resource;
         }
 
-        public static void GetEntityChangeFeedProcessorBuilder<TEntity, TMessage>(this Container container, string processorName, ChangesHandler<TEntity>? onEntityChangesDelegate = null, ChangesHandler<TMessage>? onMessageChangesDelegate = null)
-            where TEntity : Entity
-            where TMessage : Message
-        {
-            static string? GetEntityType(dynamic item) => item._entityType;
-
+        public static ChangeFeedProcessorBuilder GetMessageChangeFeedProcessorBuilder<TMessage>(this Container container, string processorName, ChangesHandler<TMessage> onMessageChangesDelegate)
+            where TMessage : Message =>
             container.GetChangeFeedProcessorBuilder<dynamic>(processorName, async (changes, cancellationToken) =>
             {
-                if (changes.Count == 0) return;
+                var messages = from change in changes
+                               where change._entityType == Message.EntityType
+                               select ((JObject)change).ToObject<TMessage>();
 
-                var typedChanges = from typedChange in
-                                       from change in changes select (Change: change, EntityType: GetEntityType(change))
-                                   where typedChange.EntityType is not null
-                                   select typedChange;
-
-                if (!typedChanges.Any()) return;
-
-                List<(dynamic Change, string EntityType)> changeBatch = new();
-
-                async Task CallChangesHandler()
-                {
-                    IReadOnlyCollection<T> CastChangeBatch<T>() => changeBatch.Select(_ => _.Change).Cast<T>().ToList().AsReadOnly();
-
-                    if (changeBatch.Count > 0)
-                    {
-                        switch (changeBatch[0].EntityType)
-                        {
-                            case Entity.EntityType:
-                                if (onEntityChangesDelegate is not null)
-                                {
-                                    await onEntityChangesDelegate(CastChangeBatch<TEntity>(), cancellationToken);
-                                }
-                                break;
-                            case Message.EntityType:
-                                if (onMessageChangesDelegate is not null)
-                                {
-                                    await onMessageChangesDelegate(CastChangeBatch<TMessage>(), cancellationToken);
-                                }
-                                break;
-                        }
-                        changeBatch.Clear();
-                    }
-                }
-
-                changeBatch.Add(typedChanges.First());
-
-                foreach (var change in typedChanges.Skip(1))
-                {
-                    if (change.EntityType != changeBatch[0].EntityType)
-                    {
-                        await CallChangesHandler();
-                    }
-
-                    changeBatch.Add(change);
-                }
-
-                if (changeBatch.Count > 0)
-                {
-                    await CallChangesHandler();
-                }
+                await onMessageChangesDelegate(messages.ToList().AsReadOnly(), cancellationToken);
             });
-        }
     }
 }

@@ -29,5 +29,21 @@ namespace FTGO.Restaurant.CosmosDbEntities.Core
 
         public async Task<Restaurant> Read(Guid id) =>
             await container.ReadEntityAsync<Restaurant>(id.ToString());
+
+        public ChangeFeedProcessor CreateMessageFeedProcessor(Container leaseContainer, Func<RestaurantCreated, Task> onNewMessage)
+        {
+            var processor = container.GetMessageChangeFeedProcessorBuilder<RestaurantCreated>(nameof(Restaurant) + "MessageProcessor", async (messages, cancellationToken) =>
+              {
+                  foreach (var message in messages)
+                  {
+                      await onNewMessage(message);
+                      cancellationToken.ThrowIfCancellationRequested();
+                  }
+              }).WithLeaseContainer(leaseContainer)
+                .WithInstanceName("processor1")
+                .Build();
+
+            return processor;
+        }
     }
 }

@@ -11,13 +11,18 @@ namespace AD.Messaging.Cosmos
         [JsonProperty("_etag")]
         public string? ETag { get; set; }
 
-        [JsonProperty("_ts")]
-        public DateTime? TimeStamp { get; set; }
-
         [JsonProperty(Entity.PartitionKey)]
         public string? EntityId { get; set; }
 
         [JsonProperty(Entity.DiscriminatorKey)]
         public const string EntityType = "message";
+    }
+
+    public abstract class DiscriminatedMessage : Message
+    {
+        [JsonProperty("_messageType")]
+        public string? MessageType { get; set; }
+
+        public string? Body { get; set; }
     }
 }

@@ -20,6 +20,11 @@ type CreateTests () =
             use client = new CosmosClient("https://localhost:8081", primaryKey)
             let db = client.GetDatabase("RestaurantService")
             let container = db.GetContainer("Restaurant")
+            let leaseContainer = db.GetContainer "RestaurantMessageLease"
+
+            let! processor = RestaurantAggregateAdapter.startMessageFeedProcessor container leaseContainer <| fun message -> async {
+                return ()
+            }
 
             let createEntity = RestaurantAggregateAdapter.create container
             let readEntity = RestaurantAggregateAdapter.read container
@@ -35,6 +40,9 @@ type CreateTests () =
             let! createdRestaurant = args |> create
             let! readRestaurant = createdRestaurant.Id.Value |> read
 
+            do! Async.Sleep(5000)
+
+            do! processor.Stop ()
             return ()
         }
         |> Async.StartAsTask :> Task

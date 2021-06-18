@@ -1,6 +1,7 @@
 ﻿namespace FTGO.Restaurant.CosmosDbEntities
 
 open System
+open System.Threading.Tasks
 open FTGO.Common.BaseTypes
 open FTGO.Restaurant.BaseTypes
 open FTGO.Restaurant.Entities
@@ -40,4 +41,16 @@ module RestaurantAggregateAdapter =
                         Menu = []
                     }
                     Versioned (restaurant, ETag entity.ETag))
+        }
+
+    let startMessageFeedProcessor container leaseContainer f =
+        let dataAccess = container |> RestaurantDataAccess
+        let onNewMessage message = async {
+            do! message |> f
+        }
+
+        let processor = dataAccess.CreateMessageFeedProcessor(leaseContainer, fun message -> message |> onNewMessage |> Async.StartAsTask :> Task)
+        async {
+            do! processor.StartAsync () |> Async.AwaitTask
+            return {| Stop = processor.StopAsync >> Async.AwaitTask |}
         }
