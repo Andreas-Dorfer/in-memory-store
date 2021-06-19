@@ -1,5 +1,6 @@
 namespace FTGO.Restaurant.Tests
 
+open Swensen.Unquote
 open FTGO.Restaurant.UseCases
 
 module RestaurantTests =
@@ -13,18 +14,18 @@ module RestaurantTests =
 
     let ``create a restaurant`` (create : CreateRestaurant) args = async {
         let! restaurant = args |> create
-        return args = (restaurant |> toArgs)
+        return args =! (restaurant |> toArgs)
     }
 
     let ``read a restaurant`` (create : CreateRestaurant) (read : ReadRestaurant) args = async {
         let! expected = args |> create
         let! actual = expected.Id.Value |> read
-        return Some expected = actual
+        return Some expected =! actual
     }
 
     let ``read an unknown restaurant`` (read : ReadRestaurant) unknownId = async {
         let! result = unknownId |> read
-        return None = result
+        return None =! result
     }
 
 
@@ -37,6 +38,8 @@ open RestaurantTests
 [<AbstractClass>]
 type RestaurantTests () =
 
+    let check property = property >> Async.RunSynchronously |> Check.QuickThrowOnFailure
+
     abstract member CreateEntityDependency : unit -> TestDependency<CreateRestaurantEntity>
     abstract member ReadEntityDependency : unit -> TestDependency<ReadRestaurantEntity>
 
@@ -45,35 +48,26 @@ type RestaurantTests () =
 
     [<TestMethod>]
     member test.``create a restaurant`` () =
-        fun args -> async {
-            use createEntityDependency = test.CreateEntityDependency ()
-            let create = RestaurantService.create createEntityDependency.Value
-            return! args |> ``create a restaurant`` create
-        }
-        >> Async.RunSynchronously
-        |> Check.QuickThrowOnFailure
+        use createEntityDependency = test.CreateEntityDependency ()
+        let create = RestaurantService.create createEntityDependency.Value
+        
+        create |> ``create a restaurant`` |> check
 
     [<TestMethod>]
     member test.``read a restaurant`` () =
-        fun args -> async {
-            use createEntityDependency = test.CreateEntityDependency ()
-            use readEntityDependency = test.ReadEntityDependency ()
-            let create = RestaurantService.create createEntityDependency.Value
-            let read = RestaurantService.read readEntityDependency.Value
-            return! args |> ``read a restaurant`` create read
-        }
-        >> Async.RunSynchronously
-        |> Check.QuickThrowOnFailure
+        use createEntityDependency = test.CreateEntityDependency ()
+        use readEntityDependency = test.ReadEntityDependency ()
+        let create = RestaurantService.create createEntityDependency.Value
+        let read = RestaurantService.read readEntityDependency.Value
+        
+        (create, read) ||> ``read a restaurant`` |> check
 
     [<TestMethod>]
     member test.``read an unknown restaurant`` () =
-        fun unknownId -> async {
-            use readEntityDependency = test.ReadEntityDependency ()
-            let read = RestaurantService.read readEntityDependency.Value
-            return! unknownId |> ``read an unknown restaurant`` read
-        }
-        >> Async.RunSynchronously
-        |> Check.QuickThrowOnFailure
+        use readEntityDependency = test.ReadEntityDependency ()
+        let read = RestaurantService.read readEntityDependency.Value
+        
+        read |> ``read an unknown restaurant`` |> check
 
 
 open Microsoft.Azure.Cosmos
