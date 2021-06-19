@@ -12,14 +12,14 @@ module RestaurantService =
     let private newMenuItemId = Guid.NewGuid >> MenuItemId.create >> Option.get
     let private newRestaurantId = Guid.NewGuid >> RestaurantId.create >> Option.get
 
-    let private createNewMenuItem (args : CreateMenuItemArgs) = {
+    let private createNewMenuItem (args : CreateMenuItemArgs) : MenuItemEntity = {
         Id = newMenuItemId ()
         Name = args.Name
         Price = args.Price
     }
 
     let private createNewRestaurant (args : CreateRestaurantArgs) =
-        let restaurant = {
+        let restaurant : RestaurantEntity = {
             Id = newRestaurantId ()
             Name = args.Name
             Menu = args.Menu |> List.map createNewMenuItem }
@@ -38,6 +38,7 @@ module RestaurantService =
     let private fromEntity (Versioned (entity : RestaurantEntity, eTag)) = {
         Id = Versioned (entity.Id, eTag)
         Name = entity.Name
+        Menu = entity.Menu |> List.map (fun menuItem -> { Id = menuItem.Id; Name = menuItem.Name; Price = menuItem.Price })
     }
 
 

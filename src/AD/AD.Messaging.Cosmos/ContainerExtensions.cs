@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using static Microsoft.Azure.Cosmos.Container;
 
@@ -24,11 +25,18 @@ namespace AD.Messaging.Cosmos
             return response.GetOperationResultAtIndex<TEntity>(0).Resource;
         }
 
-        public static async Task<TEntity> ReadEntityAsync<TEntity>(this Container container, string id)
+        public static async Task<TEntity?> ReadEntityAsync<TEntity>(this Container container, string id)
             where TEntity : Entity
         {
-            var response = await container.ReadItemAsync<TEntity>(id, new PartitionKey(id));
-            return response.Resource;
+            try
+            {
+                var response = await container.ReadItemAsync<TEntity>(id, new PartitionKey(id));
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
         }
 
         public static ChangeFeedProcessorBuilder GetMessageChangeFeedProcessorBuilder<TMessage>(this Container container, string processorName, ChangesHandler<TMessage> onMessageChangesDelegate)

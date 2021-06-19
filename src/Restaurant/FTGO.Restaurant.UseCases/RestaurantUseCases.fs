@@ -13,9 +13,16 @@ type CreateRestaurantArgs = {
     Menu : CreateMenuItemArgs list
 }
 
+type MenuItem = {
+    Id : MenuItemId
+    Name : NonEmptyString
+    Price : decimal
+}
+
 type Restaurant = {
     Id : Versioned<RestaurantId>
     Name : NonEmptyString
+    Menu : MenuItem list
 }
 
 type CreateRestaurant = CreateRestaurantArgs -> Async<Restaurant>
