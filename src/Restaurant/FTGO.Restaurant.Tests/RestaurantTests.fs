@@ -29,6 +29,7 @@ module RestaurantTests =
     }
 
 
+open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open FsCheck
 open FTGO.Restaurant.Entities
@@ -40,26 +41,28 @@ type RestaurantTests<'context> () =
 
     let check property = property >> Async.RunSynchronously |> Check.QuickThrowOnFailure
 
-    abstract member Context : unit -> TestDependency<'context>
+    abstract member Context : TestDependency<'context>
     abstract member CreateEntityDependency : 'context -> TestDependency<CreateRestaurantEntity>
     abstract member ReadEntityDependency : 'context -> TestDependency<ReadRestaurantEntity>
 
     static member Init () =
         Arb.register<Generators> () |> ignore
 
+    [<TestCleanup>]
+    member test.Cleanup () =
+        (test.Context :> IDisposable).Dispose()
+
     [<TestMethod>]
     member test.``create a restaurant`` () =
-        use context = test.Context ()
-        use createEntityDependency = context.Value |> test.CreateEntityDependency
+        use createEntityDependency = test.Context.Value |> test.CreateEntityDependency
         let create = RestaurantService.create createEntityDependency.Value
         
         create |> ``create a restaurant`` |> check
 
     [<TestMethod>]
     member test.``read a restaurant`` () =
-        use context = test.Context ()
-        use createEntityDependency = context.Value |> test.CreateEntityDependency
-        use readEntityDependency = context.Value |> test.ReadEntityDependency
+        use createEntityDependency = test.Context.Value |> test.CreateEntityDependency
+        use readEntityDependency = test.Context.Value |> test.ReadEntityDependency
         let create = RestaurantService.create createEntityDependency.Value
         let read = RestaurantService.read readEntityDependency.Value
         
@@ -67,11 +70,12 @@ type RestaurantTests<'context> () =
 
     [<TestMethod>]
     member test.``read an unknown restaurant`` () =
-        use context = test.Context ()
-        use readEntityDependency = context.Value |> test.ReadEntityDependency
+        use readEntityDependency = test.Context.Value |> test.ReadEntityDependency
         let read = RestaurantService.read readEntityDependency.Value
         
         read |> ``read an unknown restaurant`` |> check
+
+    
 
 
 open Microsoft.Azure.Cosmos
@@ -89,7 +93,7 @@ type CosmosDbRestaurantTests () =
     [<Literal>]
     let primaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 
-    override _.Context () =
+    override _.Context =
         let client = new CosmosClient(endpoint, primaryKey)
         let db = client.GetDatabase("RestaurantService")
         new TestDependency<_> (db.GetContainer "Restaurant", client)
