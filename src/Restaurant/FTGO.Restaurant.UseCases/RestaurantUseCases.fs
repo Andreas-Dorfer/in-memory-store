@@ -14,7 +14,7 @@ type CreateRestaurantArgs = {
 }
 
 type MenuItem = {
-    Id : MenuItemId
+    Id : Versioned<MenuItemId>
     Name : NonEmptyString
     Price : decimal
 }

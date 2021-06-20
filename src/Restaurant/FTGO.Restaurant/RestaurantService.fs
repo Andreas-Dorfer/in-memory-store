@@ -38,7 +38,7 @@ module RestaurantService =
     let private fromEntity (Versioned (entity : RestaurantEntity, eTag)) = {
         Id = Versioned (entity.Id, eTag)
         Name = entity.Name
-        Menu = entity.Menu |> List.map (fun menuItem -> { Id = menuItem.Id; Name = menuItem.Name; Price = menuItem.Price })
+        Menu = entity.Menu |> List.map (fun menuItem -> { Id = Versioned (menuItem.Id, eTag); Name = menuItem.Name; Price = menuItem.Price })
     }
 
 

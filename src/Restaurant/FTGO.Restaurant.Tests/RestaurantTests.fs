@@ -1,39 +1,10 @@
 namespace FTGO.Restaurant.Tests
 
-open Swensen.Unquote
-open FTGO.Restaurant.UseCases
-
-module RestaurantTests =
-
-    let private toArgs (restaurant : Restaurant) = {
-        Name = restaurant.Name
-        Menu = restaurant.Menu |> List.map (fun menuItem -> {
-            Name = menuItem.Name
-            Price = menuItem.Price })
-    }
-
-    let ``create a restaurant`` (create : CreateRestaurant) args = async {
-        let! restaurant = args |> create
-        return args =! (restaurant |> toArgs)
-    }
-
-    let ``read a restaurant`` (create : CreateRestaurant) (read : ReadRestaurant) args = async {
-        let! expected = args |> create
-        let! actual = expected.Id.Value |> read
-        return Some expected =! actual
-    }
-
-    let ``read an unknown restaurant`` (read : ReadRestaurant) unknownId = async {
-        let! result = unknownId |> read
-        return None =! result
-    }
-
-
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open FsCheck
 open FTGO.Restaurant.Entities
 open FTGO.Restaurant
-open RestaurantTests
+open RestaurantBehavior
 
 [<AbstractClass>]
 type RestaurantTests<'context> () =
@@ -72,24 +43,3 @@ type RestaurantTests<'context> () =
         let read = RestaurantService.read readEntityDependency.Value
         
         read |> ``read an unknown restaurant`` |> check
-
-
-open Microsoft.Azure.Cosmos
-open FTGO.Restaurant.CosmosDbEntities
-
-[<TestClass>]
-type CosmosDbRestaurantTests () =
-    inherit RestaurantTests<Container> ()
-
-    static do
-        RestaurantTests<_>.Init ()
-
-    override _.Context () = CosmosDbTest.CreateEntityContainer ()
-
-    override _.CreateEntityDependency container =
-        let createEntity = RestaurantAggregateAdapter.create container
-        new TestDependency<_> (createEntity)
-
-    override _.ReadEntityDependency container =
-        let readEntity = RestaurantAggregateAdapter.read container
-        new TestDependency<_> (readEntity)
