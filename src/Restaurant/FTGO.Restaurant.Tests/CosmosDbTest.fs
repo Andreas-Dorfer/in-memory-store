@@ -3,6 +3,7 @@
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open Microsoft.Azure.Cosmos
+open AD.Messaging.Cosmos
 
 [<TestClass>]
 type CosmosDbTest =
@@ -19,6 +20,10 @@ type CosmosDbTest =
 
     static member Client = CosmosDbTest.client
     static member Database = CosmosDbTest.db
+
+    static member CreateEntityContainer () =
+        let container = CosmosDbTest.Database.CreateContainerAsync(Guid.NewGuid().ToString(), "/" + Entity.PartitionKey).Result.Container
+        new TestDependency<_> (container, fun () -> container.DeleteContainerAsync().Wait())
 
     [<AssemblyCleanup>]
     static member Cleanup () =

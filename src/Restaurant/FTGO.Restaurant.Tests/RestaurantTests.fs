@@ -29,7 +29,6 @@ module RestaurantTests =
     }
 
 
-open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
 open FsCheck
 open FTGO.Restaurant.Entities
@@ -74,11 +73,8 @@ type RestaurantTests<'context> () =
         
         read |> ``read an unknown restaurant`` |> check
 
-    
-
 
 open Microsoft.Azure.Cosmos
-open AD.Messaging.Cosmos
 open FTGO.Restaurant.CosmosDbEntities
 
 [<TestClass>]
@@ -88,14 +84,12 @@ type CosmosDbRestaurantTests () =
     static do
         RestaurantTests<_>.Init ()
 
-    override _.Context () =
-        let container = CosmosDbTest.Database.CreateContainerAsync(Guid.NewGuid().ToString(), "/" + Entity.PartitionKey).Result.Container
-        new TestDependency<_> (container, fun () -> container.DeleteContainerAsync().Wait())
+    override _.Context () = CosmosDbTest.CreateEntityContainer ()
 
     override _.CreateEntityDependency container =
         let createEntity = RestaurantAggregateAdapter.create container
         new TestDependency<_> (createEntity)
 
     override _.ReadEntityDependency container =
-        let createEntity = RestaurantAggregateAdapter.read container
-        new TestDependency<_> (createEntity)
+        let readEntity = RestaurantAggregateAdapter.read container
+        new TestDependency<_> (readEntity)
