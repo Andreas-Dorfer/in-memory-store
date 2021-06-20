@@ -5,6 +5,7 @@ open FTGO.Common
 
 [<Struct>]
 type MenuItemId = private MenuItemId of Guid
+    with member id.Value = let (MenuItemId value) = id in value
 
 module MenuItemId =
 

@@ -19,6 +19,7 @@ module RestaurantAggregateAdapter =
             restaurant.Menu
             |> Seq.map (fun m ->
                 let menuItem = MenuItem ()
+                menuItem.Id <- m.Id.Value.ToString()
                 menuItem.Name <- m.Name.Value
                 menuItem.Price <- m.Price
                 menuItem)
