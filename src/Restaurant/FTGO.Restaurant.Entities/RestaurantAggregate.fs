@@ -16,6 +16,6 @@ type RestaurantEntity = {
     Menu : MenuItemEntity list
 }
 
-type CreateRestaurantEntity = RestaurantEntity * RestaurantCreatedEvent -> Async<ETag>
+type CreateRestaurantEntity = RestaurantEntity * RestaurantCreatedEvent -> Async<Versioned<RestaurantEntity>>
 
 type ReadRestaurantEntity = RestaurantId -> Async<Versioned<RestaurantEntity> option>

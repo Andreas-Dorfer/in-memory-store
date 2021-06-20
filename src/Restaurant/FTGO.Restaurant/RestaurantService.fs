@@ -45,8 +45,8 @@ module RestaurantService =
     let create (createEntity : CreateRestaurantEntity) : CreateRestaurant =
         fun args -> async {
             let (entity, created) = args |> createNewRestaurant
-            let! eTag = (entity, created) |> createEntity
-            return Versioned (entity, eTag) |> fromEntity
+            let! entity = (entity, created) |> createEntity
+            return entity |> fromEntity
         }
 
     let read (readEntity : ReadRestaurantEntity) : ReadRestaurant =
