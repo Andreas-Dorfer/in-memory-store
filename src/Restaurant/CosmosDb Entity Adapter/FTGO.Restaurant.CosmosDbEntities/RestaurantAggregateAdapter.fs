@@ -16,6 +16,13 @@ module RestaurantAggregateAdapter =
             let entity = Restaurant ()
             entity.Id <- restaurant.Id.Value.ToString()
             entity.Name <- restaurant.Name.Value
+            restaurant.Menu
+            |> Seq.map (fun m ->
+                let menuItem = MenuItem ()
+                menuItem.Name <- m.Name.Value
+                menuItem.Price <- m.Price
+                menuItem)
+            |> entity.Menu.AddRange
 
             let event = RestaurantCreated ()
             event.Id <- created.Id.ToString()
@@ -38,7 +45,7 @@ module RestaurantAggregateAdapter =
                     let restaurant = {
                         Id = entity.Id |> Guid.Parse |> RestaurantId.create |> Option.get
                         Name = entity.Name |> NonEmptyString.create |> Option.get
-                        Menu = []
+                        Menu = entity.Menu |> Seq.map (fun m -> { Id = Guid.Parse m.Id |> MenuItemId.create |> Option.get; Name = m.Name |> NonEmptyString.create |> Option.get; Price = m.Price }) |> Seq.toList
                     }
                     Versioned (restaurant, ETag entity.ETag))
         }

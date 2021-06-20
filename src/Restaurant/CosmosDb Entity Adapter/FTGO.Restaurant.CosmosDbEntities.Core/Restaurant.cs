@@ -1,6 +1,7 @@
 ﻿using AD.Messaging.Cosmos;
 using Microsoft.Azure.Cosmos;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FTGO.Restaurant.CosmosDbEntities.Core
@@ -8,6 +9,14 @@ namespace FTGO.Restaurant.CosmosDbEntities.Core
     public class Restaurant : Entity
     {
         public string Name { get; set; } = null!;
+        public List<MenuItem> Menu { get; set; } = new();
+    }
+
+    public class MenuItem
+    {
+        public string Id { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public decimal Price { get; set; }
     }
 
     public class RestaurantCreated : Message
