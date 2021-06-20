@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Include="Generators.fs" />
     <Compile Include="TestDependency.fs" />
+    <Compile Include="CosmosDbTest.fs" />
     <Compile Include="RestaurantTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
