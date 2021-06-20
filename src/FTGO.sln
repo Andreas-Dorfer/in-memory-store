@@ -33,9 +33,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.Messaging.Cosmos", "AD\A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CosmosDb Entity Adapter", "CosmosDb Entity Adapter", "{C25BB56E-9242-475F-B361-644CB0CCC539}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FTGO.Restaurant.CosmosDbEntities", "Restaurant\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities\FTGO.Restaurant.CosmosDbEntities.fsproj", "{93ABBCE9-7781-47C7-A0AD-2A104DC586AA}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FTGO.Restaurant.CosmosDbEntities", "Restaurant\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities\FTGO.Restaurant.CosmosDbEntities.fsproj", "{93ABBCE9-7781-47C7-A0AD-2A104DC586AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTGO.Restaurant.CosmosDbEntities.Core", "Restaurant\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities.Core\FTGO.Restaurant.CosmosDbEntities.Core.csproj", "{140E36BC-26E7-4E4B-833E-B8B93B1328F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTGO.Restaurant.CosmosDbEntities.Core", "Restaurant\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities.Core\FTGO.Restaurant.CosmosDbEntities.Core.csproj", "{140E36BC-26E7-4E4B-833E-B8B93B1328F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTGO.Restaurant.SqlEntities.Core", "Restaurant\SQL Entity Adapter\FTGO.Restaurant.SqlEntities.Core\FTGO.Restaurant.SqlEntities.Core.csproj", "{D595B325-75C8-4FA0-9C43-E667B9D92C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.Messaging.SqlEF", "AD\AD.Messaging.SqlEF\AD.Messaging.SqlEF.csproj", "{44A01BA6-F661-4659-B01B-325144D1AAEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +95,14 @@ Global
 		{140E36BC-26E7-4E4B-833E-B8B93B1328F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{140E36BC-26E7-4E4B-833E-B8B93B1328F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{140E36BC-26E7-4E4B-833E-B8B93B1328F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D595B325-75C8-4FA0-9C43-E667B9D92C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D595B325-75C8-4FA0-9C43-E667B9D92C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D595B325-75C8-4FA0-9C43-E667B9D92C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D595B325-75C8-4FA0-9C43-E667B9D92C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A01BA6-F661-4659-B01B-325144D1AAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A01BA6-F661-4659-B01B-325144D1AAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A01BA6-F661-4659-B01B-325144D1AAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A01BA6-F661-4659-B01B-325144D1AAEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +122,8 @@ Global
 		{C25BB56E-9242-475F-B361-644CB0CCC539} = {17AE85BD-8F58-4752-92F3-A79F919D0C9C}
 		{93ABBCE9-7781-47C7-A0AD-2A104DC586AA} = {C25BB56E-9242-475F-B361-644CB0CCC539}
 		{140E36BC-26E7-4E4B-833E-B8B93B1328F3} = {C25BB56E-9242-475F-B361-644CB0CCC539}
+		{D595B325-75C8-4FA0-9C43-E667B9D92C01} = {58899410-C44C-4177-A69D-A8829661E005}
+		{44A01BA6-F661-4659-B01B-325144D1AAEB} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3CE3EAF-CB28-49AE-88A8-6DAA85B320B7}
