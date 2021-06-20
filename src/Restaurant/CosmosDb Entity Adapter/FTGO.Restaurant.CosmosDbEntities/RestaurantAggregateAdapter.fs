@@ -17,12 +17,7 @@ module RestaurantAggregateAdapter =
             entity.Id <- restaurant.Id.Value.ToString()
             entity.Name <- restaurant.Name.Value
             restaurant.Menu
-            |> Seq.map (fun m ->
-                let menuItem = MenuItem ()
-                menuItem.Id <- m.Id.Value.ToString()
-                menuItem.Name <- m.Name.Value
-                menuItem.Price <- m.Price
-                menuItem)
+            |> Seq.map (fun m -> MenuItem (m.Id.Value.ToString(), m.Name.Value, m.Price))
             |> entity.Menu.AddRange
 
             let event = RestaurantCreated ()

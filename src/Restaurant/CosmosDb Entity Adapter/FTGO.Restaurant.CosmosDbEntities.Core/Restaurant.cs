@@ -12,12 +12,7 @@ namespace FTGO.Restaurant.CosmosDbEntities.Core
         public List<MenuItem> Menu { get; set; } = new();
     }
 
-    public class MenuItem
-    {
-        public string Id { get; set; } = null!;
-        public string Name { get; set; } = null!;
-        public decimal Price { get; set; }
-    }
+    public record MenuItem(string Id, string Name, decimal Price);
 
     public class RestaurantCreated : Message
     {
