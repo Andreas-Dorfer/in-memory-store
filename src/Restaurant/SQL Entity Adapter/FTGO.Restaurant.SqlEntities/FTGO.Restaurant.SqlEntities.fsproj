@@ -6,11 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RestaurantEntityAdapter.fs" />
+    <Compile Include="RestaurantAggregateAdapter.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\FTGO.Restaurant.Entities\FTGO.Restaurant.Entities.fsproj" />
+    <ProjectReference Include="..\FTGO.Restaurant.SqlEntities.Core\FTGO.Restaurant.SqlEntities.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

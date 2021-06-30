@@ -14,11 +14,13 @@
     <Compile Include="RestaurantBehavior.fs" />
     <Compile Include="RestaurantTests.fs" />
     <Compile Include="CosmosDbRestaurantTests.fs" />
+    <Compile Include="SqlRestaurantTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FsCheck" Version="2.15.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.4" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.4" />
@@ -32,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CosmosDb Entity Adapter\FTGO.Restaurant.CosmosDbEntities\FTGO.Restaurant.CosmosDbEntities.fsproj" />
     <ProjectReference Include="..\FTGO.Restaurant\FTGO.Restaurant.fsproj" />
+    <ProjectReference Include="..\SQL Entity Adapter\FTGO.Restaurant.SqlEntities\FTGO.Restaurant.SqlEntities.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
