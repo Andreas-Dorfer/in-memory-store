@@ -3,14 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <WarnOn>3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RestaurantAggregate.fs" />
+    <Compile Include="Entry.fs" />
+    <Compile Include="InMemoryStore.fs" />
+    <Compile Include="RestaurantAggregateAdapter.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FTGO.Restaurant.Events\FTGO.Restaurant.Events.fsproj" />
+    <ProjectReference Include="..\..\FTGO.Restaurant.Entities\FTGO.Restaurant.Entities.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
