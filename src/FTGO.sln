@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.InMemoryStore", "AD\AD.I
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AD.InMemoryStore.Functional", "AD\AD.InMemoryStore.Functional\AD.InMemoryStore.Functional.fsproj", "{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.InMemoryStore.Tests", "AD\AD.InMemoryStore.Tests\AD.InMemoryStore.Tests.csproj", "{6582455B-5E67-4C40-9C46-7DB1A4BF6066}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{26BF6EB2-07A6-4D33-A6F6-215CEC316906} = {F43C6F58-00A6-4085-89D8-71F9355349D0}
 		{7F8FFDEA-8716-40CD-B8C3-2939D276916C} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 		{DBF8A9E4-AF56-45AA-81FD-275C7D58333D} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
+		{6582455B-5E67-4C40-9C46-7DB1A4BF6066} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3CE3EAF-CB28-49AE-88A8-6DAA85B320B7}

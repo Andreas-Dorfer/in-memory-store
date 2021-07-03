@@ -12,7 +12,6 @@ namespace AD.InMemoryStore
     /// <typeparam name="TValue">The value's type.</typeparam>
     public class InMemoryStore<TKey, TValue>
         where TKey : notnull
-        where TValue : notnull
     {
         readonly ConcurrentDictionary<TKey, Entry<TValue>> store = new();
 
@@ -23,7 +22,7 @@ namespace AD.InMemoryStore
         /// <param name="value">The value to add.</param>
         /// <returns>The added value and its version.</returns>
         /// <exception cref="DuplicateKeyException{TKey}">The key already exists.</exception>
-        public (TValue, Version) Add(TKey key, TValue value)
+        public (TValue Value, Version Version) Add(TKey key, TValue value)
         {
             var entry = Entry<TValue>.Create(value, Version.New);
             return store.TryAdd(key, entry) ? entry : throw new DuplicateKeyException<TKey>(key);
@@ -35,17 +34,18 @@ namespace AD.InMemoryStore
         /// <param name="key">The identifying key.</param>
         /// <returns>The value and its version.</returns>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
-        public (TValue, Version) Get(TKey key) =>
+        public (TValue Value, Version Version) Get(TKey key) =>
             Get(key, out var entry) ? entry : throw new KeyNotFoundException<TKey>(key);
 
         /// <summary>
         /// Gets all values.
         /// </summary>
         /// <returns>All values and their versions.</returns>
-        public IEnumerable<(TValue, Version)> GetAll() =>
-            from entry in store.Values
+        public IEnumerable<(TKey Key, TValue Value, Version Version)> GetAll() =>
+            from keyValue in store
+            let entry = keyValue.Value
             where !entry.Deleted
-            select ((TValue, Version))entry;
+            select (keyValue.Key, entry.Value, entry.Version);
 
         /// <summary>
         /// Updates a value.
