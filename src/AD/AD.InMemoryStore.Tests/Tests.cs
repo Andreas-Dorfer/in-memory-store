@@ -25,6 +25,16 @@ namespace AD.InMemoryStore.Tests
             }).QuickCheckThrowOnFailure();
 
         [TestMethod]
+        [ExpectedException(typeof(DuplicateKeyException<Guid>))]
+        public void Cannot_add_a_duplicate_key()
+        {
+            var key = Guid.NewGuid();
+            var sut = new InMemoryStore<Guid, string>();
+            sut.Add(key, "A");
+            sut.Add(key, "B");
+        }
+
+        [TestMethod]
         public void Get() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
@@ -39,6 +49,14 @@ namespace AD.InMemoryStore.Tests
                     Assert.AreEqual(expected.Version, actual.Version);
                 }
             }).QuickCheckThrowOnFailure();
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException<Guid>))]
+        public void Cannot_get_an_unknown_value()
+        {
+            var sut = new InMemoryStore<Guid, string>();
+            sut.Get(Guid.NewGuid());
+        }
 
         [TestMethod]
         public void GetAll() =>
