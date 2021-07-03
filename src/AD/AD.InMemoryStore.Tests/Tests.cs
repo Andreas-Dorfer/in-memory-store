@@ -14,7 +14,7 @@ namespace AD.InMemoryStore.Tests
         public void Add() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                var sut = new InMemoryStore<Guid, string>();
+                InMemoryStore<Guid, string> sut = new();
 
                 var actualValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Add(v.Key, v.Value)))).Result;
 
@@ -28,8 +28,8 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(DuplicateKeyException<Guid>))]
         public void Cannot_add_a_duplicate_key()
         {
+            InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var sut = new InMemoryStore<Guid, string>();
             sut.Add(key, "A");
             sut.Add(key, "B");
         }
@@ -38,7 +38,7 @@ namespace AD.InMemoryStore.Tests
         public void Get() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                var sut = new InMemoryStore<Guid, string>();
+                InMemoryStore<Guid, string> sut = new();
                 var expectedValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Add(v.Key, v.Value)))).Result;
 
                 var actualValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Get(v.Key)))).Result;
@@ -54,15 +54,16 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(KeyNotFoundException<Guid>))]
         public void Cannot_get_an_unknown_value()
         {
-            var sut = new InMemoryStore<Guid, string>();
-            sut.Get(Guid.NewGuid());
+            InMemoryStore<Guid, string> sut = new();
+            var unknownId = Guid.NewGuid();
+            sut.Get(unknownId);
         }
 
         [TestMethod]
         public void GetAll() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                var sut = new InMemoryStore<Guid, string>();
+                InMemoryStore<Guid, string> sut = new();
                 var expectedValues = Task.WhenAll(values.Select(v => Task.Run(() =>
                 {
                     var result = sut.Add(v.Key, v.Value);
