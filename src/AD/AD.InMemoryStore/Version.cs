@@ -20,5 +20,8 @@
             var next = unchecked(Value + 1);
             return new(next > 0 ? next : 1);
         }
+
+        public override string ToString() =>
+            '"' + Value.ToString() + '"';
     }
 }
