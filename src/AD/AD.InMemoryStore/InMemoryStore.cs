@@ -56,7 +56,7 @@ namespace AD.InMemoryStore
         /// <returns>The updated value and its version.</returns>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
         /// <exception cref="ConcurrencyException{TKey}">Version mismatch.</exception>
-        public (TValue, Version) Update(TKey key, TValue value, Version? match = null)
+        public (TValue Value, Version Version) Update(TKey key, TValue value, Version? match = null)
         {
             if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
             var next = compare.Next();
