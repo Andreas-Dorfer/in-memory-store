@@ -8,8 +8,8 @@
 
         private Entry() { }
 
-        public TValue Value { get; init; } = default!;
-        public Version Version { get; init; }
+        public TValue Value { get; private init; } = default!;
+        public Version Version { get; private init; }
 
         public bool Deleted => Version.Value == Version.Deleted.Value;
 
