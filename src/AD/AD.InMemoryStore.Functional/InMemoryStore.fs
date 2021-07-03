@@ -18,13 +18,13 @@ type InMemoryStore<'key, 'value> () =
         try
             Ok (store.Add (key, value))
         with
-        | :? DuplicateKeyException<'key> as ex -> Error (AddError<_>.DuplicateKey key)
+        | :? DuplicateKeyException<'key> as ex -> Error (AddError<_>.DuplicateKey ex.Key)
 
     member _.Get key =
         try
             Ok (store.Get key)
         with
-        | :? KeyNotFoundException<'key> as ex -> Error (GetError<_>.KeyNotFound key)
+        | :? KeyNotFoundException<'key> as ex -> Error (GetError<_>.KeyNotFound ex.Key)
 
     member _.GetAll () =
         store.GetAll ()
@@ -33,12 +33,12 @@ type InMemoryStore<'key, 'value> () =
         try
             Ok (store.Update (key, value, ``match`` |> Option.toNullable))
         with
-        | :? KeyNotFoundException<'key> as ex -> Error (UpdateError<_>.KeyNotFound key)
-        | :? ConcurrencyException<'key> as ex -> Error (UpdateError<_>.VersionMismatch key)
+        | :? KeyNotFoundException<'key> as ex -> Error (UpdateError<_>.KeyNotFound ex.Key)
+        | :? ConcurrencyException<'key> as ex -> Error (UpdateError<_>.VersionMismatch ex.Key)
 
     member _.Remove (key, ``match``) =
         try
             Ok (store.Remove (key, ``match`` |> Option.toNullable))
         with
-        | :? KeyNotFoundException<'key> as ex -> Error (RemoveError<_>.KeyNotFound key)
-        | :? ConcurrencyException<'key> as ex -> Error (RemoveError<_>.VersionMismatch key)
+        | :? KeyNotFoundException<'key> as ex -> Error (RemoveError<_>.KeyNotFound ex.Key)
+        | :? ConcurrencyException<'key> as ex -> Error (RemoveError<_>.VersionMismatch ex.Key)
