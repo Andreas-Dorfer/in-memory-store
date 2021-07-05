@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Undefined.fs" />
     <Compile Include="NonEmptyString.fs" />
     <Compile Include="ETag.fs" />
   </ItemGroup>
