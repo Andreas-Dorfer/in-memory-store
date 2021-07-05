@@ -12,15 +12,15 @@ namespace AD.InMemoryStore.Tests
     {
         [TestMethod]
         public void Add() =>
-            Prop.ForAll<Dictionary<Guid, string>>(values =>
+            Prop.ForAll<Dictionary<Guid, string>>(expectedValues =>
             {
                 InMemoryStore<Guid, string> sut = new();
 
-                var actualValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Add(v.Key, v.Value)))).Result;
+                var actualValues = DoInParallel(expectedValues, v => sut.Add(v.Key, v.Value));
 
-                foreach (var (expected, actual) in values.Zip(actualValues))
+                foreach (var ((_, expected), (actual, _)) in expectedValues.Zip(actualValues))
                 {
-                    Assert.AreEqual(expected.Value, actual.Value);
+                    Assert.AreEqual(expected, actual);
                 }
             }).QuickCheckThrowOnFailure();
 
@@ -39,14 +39,13 @@ namespace AD.InMemoryStore.Tests
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var expectedValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Add(v.Key, v.Value)))).Result;
+                var expectedValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
 
-                var actualValues = Task.WhenAll(values.Select(v => Task.Run(() => sut.Get(v.Key)))).Result;
+                var actualValues = DoInParallel(values, v => sut.Get(v.Key));
 
                 foreach (var (expected, actual) in expectedValues.Zip(actualValues))
                 {
-                    Assert.AreEqual(expected.Value, actual.Value);
-                    Assert.AreEqual(expected.Version, actual.Version);
+                    Assert.AreEqual(expected, actual);
                 }
             }).QuickCheckThrowOnFailure();
 
@@ -64,20 +63,22 @@ namespace AD.InMemoryStore.Tests
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var expectedValues = Task.WhenAll(values.Select(v => Task.Run(() =>
+                var expectedValues = DoInParallel(values, v =>
                 {
                     var result = sut.Add(v.Key, v.Value);
                     return (v.Key, result.Value, result.Version);
-                }))).Result.OrderBy(_ => _.Key);
+                }).OrderBy(_ => _.Key);
 
                 var actualValues = sut.GetAll().OrderBy(_ => _.Key);
 
                 foreach (var (expected, actual) in expectedValues.Zip(actualValues))
                 {
-                    Assert.AreEqual(expected.Key, actual.Key);
-                    Assert.AreEqual(expected.Value, actual.Value);
-                    Assert.AreEqual(expected.Version, actual.Version);
+                    Assert.AreEqual(expected, actual);
                 }
             }).QuickCheckThrowOnFailure();
+
+
+        static T2[] DoInParallel<T1, T2>(IEnumerable<T1> values, Func<T1, T2> function) =>
+            Task.WhenAll(values.Select(value => Task.Run(() => function(value)))).Result;
     }
 }
