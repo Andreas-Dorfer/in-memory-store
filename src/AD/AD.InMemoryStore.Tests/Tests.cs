@@ -10,6 +10,11 @@ namespace AD.InMemoryStore.Tests
     [TestClass]
     public class Tests
     {
+        static Tests()
+        {
+            Arb.Register(typeof(Generators));
+        }
+
         [TestMethod]
         public void Add() =>
             Prop.ForAll<Dictionary<Guid, string>>(expectedValues =>
@@ -79,20 +84,55 @@ namespace AD.InMemoryStore.Tests
 
         [TestMethod]
         public void Update() =>
-            Prop.ForAll<Dictionary<Guid, Tuple<string, string>>>(values =>
+            Prop.ForAll<Dictionary<Guid, (string InitialValue, string UpdateValue)>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value.Item1));
+                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
 
-                Parallel.ForEach(values.Zip(initialValues, (v, iv) => (v.Key, v.Value.Item2, iv.Version)), value =>
+                var updateValues = values.Zip(initialValues, (v, iv) => (v.Key, v.Value.UpdateValue, iv.Version));
+                Parallel.ForEach(updateValues, value =>
                 {
-                    var actual = sut.Update(value.Key, value.Item2, value.Version);
-                    Assert.AreEqual(value.Item2, actual.Value);
+                    var actual = sut.Update(value.Key, value.UpdateValue, value.Version);
+                    Assert.AreEqual(values[value.Key].UpdateValue, actual.Value);
+                    Assert.AreNotEqual(value.Version, actual.Version);
 
                     var afterUpdate = sut.Get(value.Key);
                     Assert.AreEqual(actual, afterUpdate);
                 });
             }).QuickCheckThrowOnFailure();
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException<Guid>))]
+        public void Cannot_update_an_unknown_value()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var unknownId = Guid.NewGuid();
+            sut.Update(unknownId, "X");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConcurrencyException<Guid>))]
+        public void Update_cheks_version()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var key = Guid.NewGuid();
+            var (_, initialVersion) = sut.Add(key, "A");
+            sut.Update(key, "B", initialVersion);
+            sut.Update(key, "C", initialVersion);
+        }
+
+        [TestMethod]
+        public void Update_with_no_version_check()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var key = Guid.NewGuid();
+            var (_, initialVersion) = sut.Add(key, "A");
+            sut.Update(key, "B", initialVersion);
+            sut.Update(key, "C");
+
+            var (afterUpdate, _) = sut.Get(key);
+            Assert.AreEqual("C", afterUpdate);
+        }
 
 
         static T2[] DoInParallel<T1, T2>(IEnumerable<T1> values, Func<T1, T2> function) =>
