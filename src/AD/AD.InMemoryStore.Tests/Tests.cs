@@ -77,6 +77,23 @@ namespace AD.InMemoryStore.Tests
                 }
             }).QuickCheckThrowOnFailure();
 
+        [TestMethod]
+        public void Update() =>
+            Prop.ForAll<Dictionary<Guid, Tuple<string, string>>>(values =>
+            {
+                InMemoryStore<Guid, string> sut = new();
+                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value.Item1));
+
+                Parallel.ForEach(values.Zip(initialValues, (v, iv) => (v.Key, v.Value.Item2, iv.Version)), value =>
+                {
+                    var actual = sut.Update(value.Key, value.Item2, value.Version);
+                    Assert.AreEqual(value.Item2, actual.Value);
+
+                    var afterUpdate = sut.Get(value.Key);
+                    Assert.AreEqual(actual, afterUpdate);
+                });
+            }).QuickCheckThrowOnFailure();
+
 
         static T2[] DoInParallel<T1, T2>(IEnumerable<T1> values, Func<T1, T2> function) =>
             Task.WhenAll(values.Select(value => Task.Run(() => function(value)))).Result;
