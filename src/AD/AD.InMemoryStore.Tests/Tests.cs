@@ -112,7 +112,7 @@ namespace AD.InMemoryStore.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ConcurrencyException<Guid>))]
-        public void Update_cheks_version()
+        public void Update_with_version_check()
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
