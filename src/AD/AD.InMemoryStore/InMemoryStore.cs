@@ -20,12 +20,12 @@ namespace AD.InMemoryStore
         /// </summary>
         /// <param name="key">The identifying key.</param>
         /// <param name="value">The value to add.</param>
-        /// <returns>The added value and its version.</returns>
+        /// <returns>The added value's version.</returns>
         /// <exception cref="DuplicateKeyException{TKey}">The key already exists.</exception>
-        public (TValue Value, Version Version) Add(TKey key, TValue value)
+        public Version Add(TKey key, TValue value)
         {
             var entry = Entry<TValue>.Create(value, Version.New);
-            return store.TryAdd(key, entry) ? entry : throw new DuplicateKeyException<TKey>(key);
+            return store.TryAdd(key, entry) ? entry.Version : throw new DuplicateKeyException<TKey>(key);
         }
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace AD.InMemoryStore
         /// <returns>The value and its version.</returns>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
         public (TValue Value, Version Version) Get(TKey key) =>
-            Get(key, out var entry) ? entry : throw new KeyNotFoundException<TKey>(key);
+            Get(key, out var entry) ? (entry.Value, entry.Version) : throw new KeyNotFoundException<TKey>(key);
 
         /// <summary>
         /// Gets all values.
         /// </summary>
-        /// <returns>All values and their versions.</returns>
+        /// <returns>All values and their keys and versions.</returns>
         public IEnumerable<(TKey Key, TValue Value, Version Version)> GetAll() =>
             from keyValue in store
             let entry = keyValue.Value
@@ -53,15 +53,15 @@ namespace AD.InMemoryStore
         /// <param name="key">The identifying key.</param>
         /// <param name="value">The updated value.</param>
         /// <param name="match">The version the value's current version has to match.</param>
-        /// <returns>The updated value and its version.</returns>
+        /// <returns>The updated value's version.</returns>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
         /// <exception cref="ConcurrencyException{TKey}">Version mismatch.</exception>
-        public (TValue Value, Version Version) Update(TKey key, TValue value, Version? match = null)
+        public Version Update(TKey key, TValue value, Version? match = null)
         {
             if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
             var next = compare.Next();
             if (!Update(key, Entry<TValue>.Create(value, next), compare)) throw new ConcurrencyException<TKey>(key);
-            return (value, next);
+            return next;
         }
 
         /// <summary>

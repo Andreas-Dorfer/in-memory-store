@@ -16,20 +16,6 @@ namespace AD.InMemoryStore.Tests
         }
 
         [TestMethod]
-        public void Add() =>
-            Prop.ForAll<Dictionary<Guid, string>>(values =>
-            {
-                InMemoryStore<Guid, string> sut = new();
-
-                var actualValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
-
-                foreach (var ((_, expected), (actual, _)) in values.Zip(actualValues))
-                {
-                    Assert.AreEqual(expected, actual);
-                }
-            }).QuickCheckThrowOnFailure();
-
-        [TestMethod]
         [ExpectedException(typeof(DuplicateKeyException<Guid>))]
         public void Cannot_add_a_duplicate_key()
         {
@@ -45,7 +31,8 @@ namespace AD.InMemoryStore.Tests
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var expectedValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+                var expectedVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+                var expectedValues = values.Zip(expectedVersions, (v, version) => (v.Value, version));
 
                 var actualValues = DoInParallel(values, v => sut.Get(v.Key));
 
@@ -72,8 +59,8 @@ namespace AD.InMemoryStore.Tests
                 InMemoryStore<Guid, string> sut = new();
                 var expectedValues = DoInParallel(values, v =>
                 {
-                    var result = sut.Add(v.Key, v.Value);
-                    return (v.Key, result.Value, result.Version);
+                    var version = sut.Add(v.Key, v.Value);
+                    return (v.Key, v.Value, version);
                 }).OrderBy(_ => _.Key);
 
                 var actualValues = sut.GetAll().OrderBy(_ => _.Key);
@@ -89,17 +76,16 @@ namespace AD.InMemoryStore.Tests
             Prop.ForAll<Dictionary<Guid, (string InitialValue, string UpdateValue)>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
+                var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
 
-                var updateValues = values.Zip(initialValues, (v, iv) => (v.Key, v.Value.UpdateValue, iv.Version));
+                var updateValues = values.Zip(initialVersions, (v, version) => (v.Key, v.Value.UpdateValue, Version: version));
                 Parallel.ForEach(updateValues, value =>
                 {
-                    var actual = sut.Update(value.Key, value.UpdateValue, value.Version);
+                    var updatedVersion = sut.Update(value.Key, value.UpdateValue, value.Version);
 
-                    Assert.AreEqual(values[value.Key].UpdateValue, actual.Value);
-                    Assert.AreNotEqual(value.Version, actual.Version);
+                    Assert.AreNotEqual(value.Version, updatedVersion);
                     var afterUpdate = sut.Get(value.Key);
-                    Assert.AreEqual(actual, afterUpdate);
+                    Assert.AreEqual((value.UpdateValue, updatedVersion), afterUpdate);
                 });
             }).QuickCheckThrowOnFailure();
 
@@ -119,7 +105,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var (_, initialVersion) = sut.Add(key, "A");
+            var initialVersion = sut.Add(key, "A");
 
             sut.Update(key, "B", initialVersion);
             sut.Update(key, "C", initialVersion);
@@ -130,7 +116,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var (_, initialVersion) = sut.Add(key, "A");
+            var initialVersion = sut.Add(key, "A");
 
             sut.Update(key, "B", initialVersion);
             sut.Update(key, "C");
@@ -144,9 +130,9 @@ namespace AD.InMemoryStore.Tests
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
-                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+                var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
 
-                var deleteValues = values.Zip(initialValues, (v, iv) => (v.Key, iv.Version));
+                var deleteValues = values.Zip(initialVersions, (v, version) => (v.Key, Version: version));
                 Parallel.ForEach(deleteValues, value =>
                 {
                     sut.Remove(value.Key, value.Version);
@@ -171,8 +157,8 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var (_, initialVersion) = sut.Add(key, "A");
-            
+            var initialVersion = sut.Add(key, "A");
+
             sut.Update(key, "B", initialVersion);
             sut.Remove(key, initialVersion);
         }
@@ -182,7 +168,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var (_, initialVersion) = sut.Add(key, "A");
+            var initialVersion = sut.Add(key, "A");
 
             sut.Update(key, "B", initialVersion);
             sut.Remove(key);

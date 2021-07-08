@@ -26,7 +26,7 @@ module RestaurantAggregateAdapter =
     let create stores : CreateRestaurantEntity =
         fun (restaurant, created) -> async {
             match (restaurant.Id, restaurant) |> stores.Restaurants.Add with
-            | Ok (restaurant, version) ->
+            | Ok (_, restaurant, version) ->
                 match (created.Id, created) |> stores.Events.Add with
                 | Ok _ -> return Versioned (restaurant, version |> toEtag)
                 | Error (AddError.DuplicateKey key) -> return invalidArg (nameof created) (key.ToString())
@@ -36,6 +36,6 @@ module RestaurantAggregateAdapter =
     let read { Restaurants = restaurants } : ReadRestaurantEntity =
         fun id -> async {
             match id |> restaurants.Get with
-            | Ok (restaurant, version) -> return Some (Versioned (restaurant, version |> toEtag))
+            | Ok (_, restaurant, version) -> return Some (Versioned (restaurant, version |> toEtag))
             | Error (GetError.KeyNotFound _) -> return None
         }
