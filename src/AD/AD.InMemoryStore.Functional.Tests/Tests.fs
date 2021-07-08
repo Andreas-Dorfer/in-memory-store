@@ -11,6 +11,10 @@ type TestClass () =
     let failOkExpected () = Assert.Fail "Ok expected"
     let failErrorExpected () = Assert.Fail "Error expected"
 
+    let okValue = function
+        | Ok ok -> ok
+        | Error _ -> raise (AssertFailedException "Ok expected")
+
     [<TestMethod>]
     member _.``Ok Add`` () =
         let sut = InMemoryStore<_, _> ()
@@ -59,10 +63,7 @@ type TestClass () =
             let expected =
                 values
                 |> Map.toList
-                |> List.map (fun keyValue ->
-                    match sut.Add keyValue with
-                    | Error _ -> raise (AssertFailedException "Add Error")
-                    | Ok ok -> ok)
+                |> List.map (sut.Add >> okValue)
 
             let actual = sut.GetAll ()
 
@@ -71,3 +72,17 @@ type TestClass () =
             let actual = actual |> List.ofSeq |> sortByKey
             Assert.AreEqual<_> (expected, actual)
         |> Check.QuickThrowOnFailure
+
+    [<TestMethod>]
+    member _.``Ok Update`` () =
+        let sut = InMemoryStore<_, _> ()
+        let expectedKey = Guid.NewGuid()
+        let (_, _, initialVersion) = sut.Add (expectedKey, "A") |> okValue
+        let expectedValue = "B"
+
+        match sut.Update (expectedKey, expectedValue, Some initialVersion) with
+        | Ok (actualKey, actualValue, actualVersion) ->
+            Assert.AreEqual<_> (expectedKey, actualKey)
+            Assert.AreEqual<_> (expectedValue, actualValue)
+            Assert.AreNotEqual<_> (initialVersion, actualVersion)
+        | Error _ -> failOkExpected ()
