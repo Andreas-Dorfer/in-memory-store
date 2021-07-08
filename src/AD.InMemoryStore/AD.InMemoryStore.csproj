@@ -9,6 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>C#, testing, mocking, prototyping</PackageTags>
+    <PackageId>AD.In-Memory-Store</PackageId>
   </PropertyGroup>
 
 </Project>
