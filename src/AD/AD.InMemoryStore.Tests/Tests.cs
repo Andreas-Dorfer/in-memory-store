@@ -17,13 +17,13 @@ namespace AD.InMemoryStore.Tests
 
         [TestMethod]
         public void Add() =>
-            Prop.ForAll<Dictionary<Guid, string>>(expectedValues =>
+            Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
                 InMemoryStore<Guid, string> sut = new();
 
-                var actualValues = DoInParallel(expectedValues, v => sut.Add(v.Key, v.Value));
+                var actualValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
 
-                foreach (var ((_, expected), (actual, _)) in expectedValues.Zip(actualValues))
+                foreach (var ((_, expected), (actual, _)) in values.Zip(actualValues))
                 {
                     Assert.AreEqual(expected, actual);
                 }
