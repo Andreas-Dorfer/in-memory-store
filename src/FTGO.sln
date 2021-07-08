@@ -45,11 +45,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InMemory Entity Adapter", "
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FTGO.Restaurant.InMemoryEntities", "Restaurant\InMemory Entity Adapter\FTGO.Restaurant.InMemoryEntities\FTGO.Restaurant.InMemoryEntities.fsproj", "{26BF6EB2-07A6-4D33-A6F6-215CEC316906}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.InMemoryStore", "AD\AD.InMemoryStore\AD.InMemoryStore.csproj", "{7F8FFDEA-8716-40CD-B8C3-2939D276916C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.InMemoryStore", "AD\AD.InMemoryStore\AD.InMemoryStore.csproj", "{7F8FFDEA-8716-40CD-B8C3-2939D276916C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AD.InMemoryStore.Functional", "AD\AD.InMemoryStore.Functional\AD.InMemoryStore.Functional.fsproj", "{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AD.InMemoryStore.Functional", "AD\AD.InMemoryStore.Functional\AD.InMemoryStore.Functional.fsproj", "{DBF8A9E4-AF56-45AA-81FD-275C7D58333D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AD.InMemoryStore.Tests", "AD\AD.InMemoryStore.Tests\AD.InMemoryStore.Tests.csproj", "{6582455B-5E67-4C40-9C46-7DB1A4BF6066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AD.InMemoryStore.Tests", "AD\AD.InMemoryStore.Tests\AD.InMemoryStore.Tests.csproj", "{6582455B-5E67-4C40-9C46-7DB1A4BF6066}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AD.InMemoryStore.Functional.Tests", "AD\AD.InMemoryStore.Functional.Tests\AD.InMemoryStore.Functional.Tests.fsproj", "{064258A1-4350-4C89-9970-B9E8D50584E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6582455B-5E67-4C40-9C46-7DB1A4BF6066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064258A1-4350-4C89-9970-B9E8D50584E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064258A1-4350-4C89-9970-B9E8D50584E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064258A1-4350-4C89-9970-B9E8D50584E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064258A1-4350-4C89-9970-B9E8D50584E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{7F8FFDEA-8716-40CD-B8C3-2939D276916C} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 		{DBF8A9E4-AF56-45AA-81FD-275C7D58333D} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 		{6582455B-5E67-4C40-9C46-7DB1A4BF6066} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
+		{064258A1-4350-4C89-9970-B9E8D50584E8} = {5F45EB19-7B0F-4213-963F-23D78895CA3B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3CE3EAF-CB28-49AE-88A8-6DAA85B320B7}
