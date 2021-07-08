@@ -2,6 +2,7 @@ namespace AD.InMemoryStore.Functional.Tests
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
+open FsCheck
 open AD.InMemoryStore.Functional
 
 [<TestClass>]
@@ -51,21 +52,22 @@ type TestClass () =
         | Error (GetError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Ok _ -> failErrorExpected ()
 
-    //[<TestMethod>]
-    //member _.``GetAll`` () =
-    //    let sut = InMemoryStore<_, _> ()
-    //    let expected =
-    //        [   (Guid.NewGuid(), "A")
-    //            (Guid.NewGuid(), "B")
-    //            (Guid.NewGuid(), "C") ]
-    //        |> List.map (fun (key, value) ->
-    //            match sut.Add (key, value) with
-    //            | Error _ -> raise (AssertFailedException "Add Error")
-    //            | Ok (_, version) -> struct (key, value, version))
+    [<TestMethod>]
+    member _.``GetAll`` () =
+        fun (values : Map<Guid, string>) ->
+            let sut = InMemoryStore<_, _> ()
+            let expected =
+                values
+                |> Map.toList
+                |> List.map (fun keyValue ->
+                    match sut.Add keyValue with
+                    | Error _ -> raise (AssertFailedException "Add Error")
+                    | Ok ok -> ok)
 
-    //    let actual = sut.GetAll ()
+            let actual = sut.GetAll ()
 
-    //    let sortByKey = List.sortBy (fun struct (key, _, _) -> key)
-    //    let expected = expected |> sortByKey
-    //    let actual = actual |> List.ofSeq |> sortByKey
-    //    Assert.AreEqual<_> (expected, actual)
+            let sortByKey = List.sortBy (fun (key, _, _) -> key)
+            let expected = expected |> sortByKey
+            let actual = actual |> List.ofSeq |> sortByKey
+            Assert.AreEqual<_> (expected, actual)
+        |> Check.QuickThrowOnFailure

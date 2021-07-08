@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Version.fs" />
     <Compile Include="Errors.fs" />
     <Compile Include="InMemoryStore.fs" />
   </ItemGroup>
