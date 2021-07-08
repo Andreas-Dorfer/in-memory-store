@@ -35,6 +35,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
+
             sut.Add(key, "A");
             sut.Add(key, "B");
         }
@@ -60,6 +61,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var unknownId = Guid.NewGuid();
+
             sut.Get(unknownId);
         }
 
@@ -93,9 +95,9 @@ namespace AD.InMemoryStore.Tests
                 Parallel.ForEach(updateValues, value =>
                 {
                     var actual = sut.Update(value.Key, value.UpdateValue, value.Version);
+
                     Assert.AreEqual(values[value.Key].UpdateValue, actual.Value);
                     Assert.AreNotEqual(value.Version, actual.Version);
-
                     var afterUpdate = sut.Get(value.Key);
                     Assert.AreEqual(actual, afterUpdate);
                 });
@@ -107,6 +109,7 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var unknownId = Guid.NewGuid();
+
             sut.Update(unknownId, "X");
         }
 
@@ -117,6 +120,7 @@ namespace AD.InMemoryStore.Tests
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             var (_, initialVersion) = sut.Add(key, "A");
+
             sut.Update(key, "B", initialVersion);
             sut.Update(key, "C", initialVersion);
         }
@@ -127,11 +131,63 @@ namespace AD.InMemoryStore.Tests
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             var (_, initialVersion) = sut.Add(key, "A");
+
             sut.Update(key, "B", initialVersion);
             sut.Update(key, "C");
 
             var (afterUpdate, _) = sut.Get(key);
             Assert.AreEqual("C", afterUpdate);
+        }
+
+        [TestMethod]
+        public void Remove() =>
+            Prop.ForAll<Dictionary<Guid, string>>(values =>
+            {
+                InMemoryStore<Guid, string> sut = new();
+                var initialValues = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+
+                var deleteValues = values.Zip(initialValues, (v, iv) => (v.Key, iv.Version));
+                Parallel.ForEach(deleteValues, value =>
+                {
+                    sut.Remove(value.Key, value.Version);
+
+                    Assert.ThrowsException<KeyNotFoundException<Guid>>(() => sut.Get(value.Key));
+                });
+            }).QuickCheckThrowOnFailure();
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException<Guid>))]
+        public void Cannot_remove_an_unknown_value()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var unknownId = Guid.NewGuid();
+
+            sut.Remove(unknownId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConcurrencyException<Guid>))]
+        public void Remove_with_version_check()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var key = Guid.NewGuid();
+            var (_, initialVersion) = sut.Add(key, "A");
+            
+            sut.Update(key, "B", initialVersion);
+            sut.Remove(key, initialVersion);
+        }
+
+        [TestMethod]
+        public void Remove_with_no_version_check()
+        {
+            InMemoryStore<Guid, string> sut = new();
+            var key = Guid.NewGuid();
+            var (_, initialVersion) = sut.Add(key, "A");
+
+            sut.Update(key, "B", initialVersion);
+            sut.Remove(key);
+
+            Assert.ThrowsException<KeyNotFoundException<Guid>>(() => sut.Get(key));
         }
 
 
