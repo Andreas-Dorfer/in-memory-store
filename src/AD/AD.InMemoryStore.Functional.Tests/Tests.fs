@@ -16,7 +16,7 @@ type TestClass () =
         let expected = "A"
 
         match sut.Add (Guid.NewGuid(), expected) with
-        | Ok (actual, _) -> Assert.AreEqual<_> ("A", actual)
+        | Ok (actual, _) -> Assert.AreEqual<_> (expected, actual)
         | Error _ -> failOkExpected ()
 
     [<TestMethod>]
