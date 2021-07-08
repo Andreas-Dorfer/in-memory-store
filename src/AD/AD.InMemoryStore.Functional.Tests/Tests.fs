@@ -10,6 +10,7 @@ type TestClass () =
 
     let failOkExpected () = Assert.Fail "Ok expected"
     let failErrorExpected () = Assert.Fail "Error expected"
+    let failNamedErrorExpected name = Assert.Fail (name + " error expected")
 
     let okValue = function
         | Ok ok -> ok
@@ -41,10 +42,10 @@ type TestClass () =
     member _.``Ok Get`` () =
         let sut = InMemoryStore<_, _> ()
         let expectedKey = Guid.NewGuid()
-        let expected = sut.Add (expectedKey, "A")
+        let expected = sut.Add (expectedKey, "A") |> okValue
 
         match sut.Get(expectedKey) with
-        | Ok actual -> Assert.AreEqual<_> (expected, Ok actual)
+        | Ok actual -> Assert.AreEqual<_> (expected, actual)
         | Error _ -> failOkExpected ()
 
     [<TestMethod>]
@@ -86,3 +87,25 @@ type TestClass () =
             Assert.AreEqual<_> (expectedValue, actualValue)
             Assert.AreNotEqual<_> (initialVersion, actualVersion)
         | Error _ -> failOkExpected ()
+
+    [<TestMethod>]
+    member _.``KeyNotFound Error Update`` () =
+        let sut = InMemoryStore<_, _> ()
+        let unknownKey = Guid.NewGuid()
+        
+        match sut.Update (unknownKey, "X", None) with
+        | Error (UpdateError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Error _ -> failNamedErrorExpected (nameof UpdateError.KeyNotFound)
+        | Ok _ -> failErrorExpected ()
+
+    [<TestMethod>]
+    member _.``VersionMismatch Error Update`` () =
+        let sut = InMemoryStore<_, _> ()
+        let key = Guid.NewGuid()
+        let (_, _, initialVersion) = sut.Add (key, "A") |> okValue
+        sut.Update (key, "B", Some initialVersion) |> ignore
+
+        match sut.Update (key, "C", Some initialVersion) with
+        | Error (UpdateError.VersionMismatch errorKey) -> Assert.AreEqual<_> (key, errorKey)
+        | Error _ -> failNamedErrorExpected (nameof UpdateError.VersionMismatch)
+        | Ok _ -> failErrorExpected ()
