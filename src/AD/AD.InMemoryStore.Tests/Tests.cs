@@ -116,13 +116,13 @@ namespace AD.InMemoryStore.Tests
         {
             InMemoryStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
-            var initialVersion = sut.Add(key, "A");
+            sut.Add(key, "A");
+            var expectedValue = "B";
 
-            sut.Update(key, "B", initialVersion);
-            sut.Update(key, "C");
+            sut.Update(key, expectedValue);
 
             var (afterUpdate, _) = sut.Get(key);
-            Assert.AreEqual("C", afterUpdate);
+            Assert.AreEqual(expectedValue, afterUpdate);
         }
 
         [TestMethod]
