@@ -72,3 +72,13 @@ A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
 ```fsharp
 open AD.InMemoryStore.Functional
 ```
+## Create a Store
+```fsharp
+let store = InMemoryStore<int, string> ()
+```
+## Add a Value
+```fsharp
+match store.Add(key = 1, value = "A") with
+| Ok (key, value, version) -> ()
+| Error (AddError.DuplicateKey key) -> ()
+```
