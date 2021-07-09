@@ -32,7 +32,7 @@ foreach (var (key, value, version) in store.GetAll())
 ```csharp
 try
 {
-    var newVersion = store.Update(key: 1, value: "B", version);
+    var newVersion = store.Update(key: 1, value: "B", match: version);
 }
 catch (ConcurrencyException<int> ex)
 { }
@@ -42,6 +42,24 @@ catch (ConcurrencyException<int> ex)
 try
 {
     var newVersion = store.Update(key: 1, value: "B");
+}
+catch (KeyNotFoundException<int> ex)
+{ }
+```
+## Remove a Value
+```csharp
+try
+{
+    store.Remove(key: 1, match: version);
+}
+catch (ConcurrencyException<int> ex)
+{ }
+```
+## Remove a Value with No Version Check
+```csharp
+try
+{
+    store.Remove(key: 1);
 }
 catch (KeyNotFoundException<int> ex)
 { }
