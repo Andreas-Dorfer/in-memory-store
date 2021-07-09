@@ -21,9 +21,12 @@ try
     var (value, version) = store.Get(key: 1);
 }
 catch (KeyNotFoundException<int> ex)
-{
-    // The key doesn't exist.
-}
+{ }
+```
+## Get all Values
+```csharp
+foreach (var (key, value, version) in store.GetAll())
+{ }
 ```
 # AD.InMemoryStore.Functional
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.Functional.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore.Functional/)
