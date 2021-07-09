@@ -68,3 +68,7 @@ catch (KeyNotFoundException<int> ex)
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.Functional.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore.Functional/)
 
 A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
+## Namespace
+```fsharp
+open AD.InMemoryStore.Functional
+```
