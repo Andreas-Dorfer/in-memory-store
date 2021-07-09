@@ -28,6 +28,24 @@ catch (KeyNotFoundException<int> ex)
 foreach (var (key, value, version) in store.GetAll())
 { }
 ```
+## Update a Value
+```csharp
+try
+{
+    var newVersion = store.Update(key: 1, value: "B", version);
+}
+catch (ConcurrencyException<int> ex)
+{ }
+```
+## Update a Value with No Version Check
+```csharp
+try
+{
+    var newVersion = store.Update(key: 1, value: "B");
+}
+catch (KeyNotFoundException<int> ex)
+{ }
+```
 # AD.InMemoryStore.Functional
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.Functional.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore.Functional/)
 
