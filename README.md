@@ -87,3 +87,14 @@ match store.Add(key = 1, value = "A") with
 | Ok (key, value, version) -> ()
 | Error (AddError.DuplicateKey key) -> ()
 ```
+## Get a Value
+```fsharp
+match store.Get(key = 1) with
+| Ok (key, value, version) -> ()
+| Error (GetError.KeyNotFound key) -> ()
+```
+## Get all Values
+```fsharp
+for (key, value, version) in store.GetAll() do
+    ()
+```
