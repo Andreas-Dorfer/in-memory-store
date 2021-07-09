@@ -22,8 +22,8 @@ module TestClass =
             Assert.AreNotEqual<_> (initialVersion, actualVersion)
         | Error _ -> failOkExpected ()
 
-    let assertOkRemove = function
-        | Ok () -> ()
+    let assertOkRemove expectedKey = function
+        | Ok actualKey -> Assert.AreEqual<_> (expectedKey, actualKey)
         | Error _ -> failOkExpected ()
 
 open TestClass
@@ -134,20 +134,20 @@ type TestClass () =
     [<TestMethod>]
     member _.``Ok Remove`` () =
         let sut = InMemoryStore<_, _> ()
-        let key = Guid.NewGuid()
-        let (_, _, initialVersion) = sut.Add (key, "A") |> okValue
+        let expectedKey = Guid.NewGuid()
+        let (_, _, initialVersion) = sut.Add (expectedKey, "A") |> okValue
 
-        sut.Remove (key, Some initialVersion)
-        |> assertOkRemove
+        sut.Remove (expectedKey, Some initialVersion)
+        |> assertOkRemove expectedKey
 
     [<TestMethod>]
     member _.``Ok Remove with no version check`` () =
         let sut = InMemoryStore<_, _> ()
-        let key = Guid.NewGuid()
-        sut.Add (key, "A") |> ignore
+        let expectedKey = Guid.NewGuid()
+        sut.Add (expectedKey, "A") |> ignore
 
-        sut.Remove (key, None)
-        |> assertOkRemove
+        sut.Remove (expectedKey, None)
+        |> assertOkRemove expectedKey
 
     [<TestMethod>]
     member _.``KeyNotFound Error Remove`` () =

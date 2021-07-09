@@ -37,7 +37,8 @@ type InMemoryStore<'key, 'value> () =
     /// Removes a value.
     member _.Remove (key, ``match``) =
         try
-            Ok (store.Remove (key, ``match`` |> Option.map (fun (Version v) -> v) |> Option.toNullable))
+            store.Remove (key, ``match`` |> Option.map (fun (Version v) -> v) |> Option.toNullable)
+            Ok key
         with
         | :? AD.InMemoryStore.KeyNotFoundException<'key> as exn -> Error (RemoveError.KeyNotFound exn.Key)
         | :? AD.InMemoryStore.ConcurrencyException<'key> as exn -> Error (RemoveError.VersionMismatch exn.Key)
