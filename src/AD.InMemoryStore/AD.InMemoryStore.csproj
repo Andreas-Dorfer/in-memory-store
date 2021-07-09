@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Andreas Dorfer</Authors>
     <Company>Andreas Dorfer</Company>
     <Description>A thread-safe in-memory store with versioning.</Description>
