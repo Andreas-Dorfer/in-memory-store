@@ -1,15 +1,17 @@
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore/)
 # AD.InMemoryStore
 A thread-safe in-memory store with optimistic concurrency support. Great for testing / mocking and prototyping.
-## Namespace
+## NuGet Package
+    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.0.0
+### Namespace
 ```csharp
 using AD.InMemoryStore;
 ```
-## Create a Store
+### Create a Store
 ```csharp
 InMemoryStore<int, string> store = new();
 ```
-## Add a Value
+### Add a Value
 ```csharp
 try
 {
@@ -18,7 +20,7 @@ try
 catch (DuplicateKeyException<int> ex)
 { }
 ```
-## Get a Value
+### Get a Value
 ```csharp
 try
 {
@@ -27,12 +29,12 @@ try
 catch (KeyNotFoundException<int> ex)
 { }
 ```
-## Get all Values
+### Get all Values
 ```csharp
 foreach (var (key, value, version) in store.GetAll())
 { }
 ```
-## Update a Value
+### Update a Value
 ```csharp
 try
 {
@@ -41,7 +43,7 @@ try
 catch (ConcurrencyException<int> ex)
 { }
 ```
-## Update a Value with No Version Check
+### Update a Value with No Version Check
 ```csharp
 try
 {
@@ -50,7 +52,7 @@ try
 catch (KeyNotFoundException<int> ex)
 { }
 ```
-## Remove a Value
+### Remove a Value
 ```csharp
 try
 {
@@ -59,7 +61,7 @@ try
 catch (ConcurrencyException<int> ex)
 { }
 ```
-## Remove a Value with No Version Check
+### Remove a Value with No Version Check
 ```csharp
 try
 {
@@ -72,32 +74,34 @@ catch (KeyNotFoundException<int> ex)
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.Functional.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore.Functional/)
 # AD.InMemoryStore.Functional
 A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
-## Namespace
+## NuGet Package
+    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.0.0
+### Namespace
 ```fsharp
 open AD.InMemoryStore.Functional
 ```
-## Create a Store
+### Create a Store
 ```fsharp
 let store = InMemoryStore<int, string> ()
 ```
-## Add a Value
+### Add a Value
 ```fsharp
 match store.Add(key = 1, value = "A") with
 | Ok (key, value, version) -> ()
 | Error (AddError.DuplicateKey key) -> ()
 ```
-## Get a Value
+### Get a Value
 ```fsharp
 match store.Get(key = 1) with
 | Ok (key, value, version) -> ()
 | Error (GetError.KeyNotFound key) -> ()
 ```
-## Get all Values
+### Get all Values
 ```fsharp
 for (key, value, version) in store.GetAll() do
     ()
 ```
-## Update a Value
+### Update a Value
 ```fsharp
 match store.Update(key = 1, value = "B", ``match`` = Some version) with
 | Ok (kev, value, version) -> ()
@@ -106,7 +110,7 @@ match store.Update(key = 1, value = "B", ``match`` = Some version) with
     | UpdateError.VersionMismatch key -> ()
     | _ -> ()
 ```
-## Update a Value with No Version Check
+### Update a Value with No Version Check
 ```fsharp
 match store.Update(key = 1, value = "B", ``match`` = None) with
 | Ok (kev, value, version) -> ()
@@ -115,7 +119,7 @@ match store.Update(key = 1, value = "B", ``match`` = None) with
     | UpdateError.KeyNotFound key -> ()
     | _ -> ()
 ```
-## Remove a Value
+### Remove a Value
 ```fsharp
 match store.Remove(key = 1, ``match`` = Some version) with
 | Ok () -> ()
@@ -124,7 +128,7 @@ match store.Remove(key = 1, ``match`` = Some version) with
     | RemoveError.VersionMismatch key -> ()
     | _ -> ()
 ```
-## Remove a Value with No Version Check
+### Remove a Value with No Version Check
 ```fsharp
 match store.Remove(key = 1, ``match`` = None) with
 | Ok () -> ()
