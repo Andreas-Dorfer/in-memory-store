@@ -16,7 +16,14 @@ var version = store.Add(key: 1, value: "A");
 ```
 ## Get a Value
 ```csharp
-var (value, version) = store.Get(key: 1);
+try
+{
+    var (value, version) = store.Get(key: 1);
+}
+catch (KeyNotFoundException<int> ex)
+{
+    // The key doesn't exist.
+}
 ```
 # AD.InMemoryStore.Functional
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.Functional.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore.Functional/)
