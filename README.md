@@ -12,7 +12,12 @@ InMemoryStore<int, string> store = new();
 ```
 ## Add a Value
 ```csharp
-var version = store.Add(key: 1, value: "A");
+try
+{
+    var version = store.Add(key: 1, value: "A");
+}
+catch (DuplicateKeyException<int> ex)
+{ }
 ```
 ## Get a Value
 ```csharp
