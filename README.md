@@ -116,3 +116,21 @@ match store.Update(key = 1, value = "B", ``match`` = None) with
     | UpdateError.KeyNotFound key -> ()
     | _ -> ()
 ```
+## Remove a Value
+```fsharp
+match store.Remove(key = 1, ``match`` = Some version) with
+| Ok () -> ()
+| Error error ->
+    match error with
+    | RemoveError.VersionMismatch key -> ()
+    | _ -> ()
+```
+## Remove a Value with No Version Check
+```fsharp
+match store.Remove(key = 1, ``match`` = None) with
+| Ok () -> ()
+| Error error ->
+    match error with
+    | RemoveError.KeyNotFound key -> ()
+    | _ -> ()
+```
