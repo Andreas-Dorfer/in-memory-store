@@ -1,6 +1,6 @@
 [![NuGet Package](https://img.shields.io/nuget/v/AndreasDorfer.InMemoryStore.svg)](https://www.nuget.org/packages/AndreasDorfer.InMemoryStore/)
 # AD.InMemoryStore
-A thread-safe in-memory store with optimistic concurrency support. Great for testing / mocking and prototyping.
+A thread-safe in-memory key-value store with optimistic concurrency support. Great for testing / mocking and prototyping.
 ## NuGet Package
     PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.0.0
 ### Namespace
