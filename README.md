@@ -104,7 +104,7 @@ for (key, value, version) in store.GetAll() do
 ### Update a Value
 ```fsharp
 match store.Update(key = 1, value = "B", ``match`` = Some version) with
-| Ok (kev, value, version) -> ()
+| Ok (key, value, version) -> ()
 | Error error ->
     match error with
     | UpdateError.VersionMismatch key -> ()
@@ -113,7 +113,7 @@ match store.Update(key = 1, value = "B", ``match`` = Some version) with
 ### Update a Value with No Version Check
 ```fsharp
 match store.Update(key = 1, value = "B", ``match`` = None) with
-| Ok (kev, value, version) -> ()
+| Ok (key, value, version) -> ()
 | Error error ->
     match error with
     | UpdateError.KeyNotFound key -> ()
