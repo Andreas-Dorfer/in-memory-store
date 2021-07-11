@@ -2,7 +2,7 @@
 # AD.InMemoryStore
 A thread-safe in-memory key-value store with optimistic concurrency support. Great for testing / mocking and prototyping.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.0.0
+    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.0.1
 ### Namespace
 ```csharp
 using AD.InMemoryStore;
@@ -47,7 +47,7 @@ catch (ConcurrencyException<int> ex)
 ```csharp
 try
 {
-    var newVersion = store.Update(key: 1, value: "B");
+    var newVersion = store.Update(key: 1, value: "B", match: null);
 }
 catch (KeyNotFoundException<int> ex)
 { }
@@ -65,7 +65,7 @@ catch (ConcurrencyException<int> ex)
 ```csharp
 try
 {
-    store.Remove(key: 1);
+    store.Remove(key: 1, match: null);
 }
 catch (KeyNotFoundException<int> ex)
 { }
@@ -75,7 +75,7 @@ catch (KeyNotFoundException<int> ex)
 # AD.InMemoryStore.Functional
 A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.0.0
+    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.0.1
 ### Namespace
 ```fsharp
 open AD.InMemoryStore.Functional
@@ -122,7 +122,7 @@ match store.Update(key = 1, value = "B", ``match`` = None) with
 ### Remove a Value
 ```fsharp
 match store.Remove(key = 1, ``match`` = Some version) with
-| Ok () -> ()
+| Ok key -> ()
 | Error error ->
     match error with
     | RemoveError.VersionMismatch key -> ()
@@ -131,7 +131,7 @@ match store.Remove(key = 1, ``match`` = Some version) with
 ### Remove a Value with No Version Check
 ```fsharp
 match store.Remove(key = 1, ``match`` = None) with
-| Ok () -> ()
+| Ok key -> ()
 | Error error ->
     match error with
     | RemoveError.KeyNotFound key -> ()
