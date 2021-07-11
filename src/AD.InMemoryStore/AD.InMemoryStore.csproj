@@ -6,10 +6,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Andreas Dorfer</Authors>
     <Company>Andreas Dorfer</Company>
-    <Description>A thread-safe in-memory store with versioning.</Description>
+    <Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
-    <PackageTags>C#, testing, mocking, prototyping</PackageTags>
+    <PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
     <PackageId>AndreasDorfer.InMemoryStore</PackageId>
     <Version>1.0.1</Version>
   </PropertyGroup>

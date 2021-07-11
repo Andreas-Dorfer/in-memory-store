@@ -6,10 +6,10 @@
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <PackageId>AndreasDorfer.InMemoryStore.Functional</PackageId>
     <Authors>Andreas Dorfer</Authors>
-    <Description>A thread-safe in-memory store with versioning.</Description>
+    <Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
-    <PackageTags>F#, testing, mocking, prototyping</PackageTags>
+    <PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
