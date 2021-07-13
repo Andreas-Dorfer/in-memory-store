@@ -33,7 +33,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Add`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         let expectedValue = "A"
 
@@ -45,7 +45,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``DuplicateKey Error Add`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let key = Guid.NewGuid()
         sut.Add (key, "A") |> ignore
         
@@ -55,7 +55,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Get`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         let expected = sut.Add (expectedKey, "A") |> okValue
 
@@ -65,7 +65,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``KeyNotFound Error Get`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let unknownKey = Guid.NewGuid()
 
         match sut.Get(unknownKey) with
@@ -75,7 +75,7 @@ type TestClass () =
     [<TestMethod>]
     member _.``GetAll`` () =
         fun (values : Map<Guid, string>) ->
-            let sut = InMemoryStore<_, _> ()
+            let sut = KeyValueStore<_, _> ()
             let expected =
                 values
                 |> Map.toList
@@ -91,7 +91,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Update`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         let (_, _, initialVersion) = sut.Add (expectedKey, "A") |> okValue
         let expectedValue = "B"
@@ -101,7 +101,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Update with no version check`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         sut.Add (expectedKey, "A") |> ignore
         let expectedValue = "B"
@@ -111,7 +111,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``KeyNotFound Error Update`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let unknownKey = Guid.NewGuid()
         
         match sut.Update (unknownKey, "X", None) with
@@ -121,7 +121,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``VersionMismatch Error Update`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let key = Guid.NewGuid()
         let (_, _, initialVersion) = sut.Add (key, "A") |> okValue
         sut.Update (key, "B", Some initialVersion) |> ignore
@@ -133,7 +133,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Remove`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         let (_, _, initialVersion) = sut.Add (expectedKey, "A") |> okValue
 
@@ -142,7 +142,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``Ok Remove with no version check`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let expectedKey = Guid.NewGuid()
         sut.Add (expectedKey, "A") |> ignore
 
@@ -151,7 +151,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``KeyNotFound Error Remove`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let unknownKey = Guid.NewGuid()
         
         match sut.Remove (unknownKey, None) with
@@ -161,7 +161,7 @@ type TestClass () =
 
     [<TestMethod>]
     member _.``VersionMismatch Error Remove`` () =
-        let sut = InMemoryStore<_, _> ()
+        let sut = KeyValueStore<_, _> ()
         let key = Guid.NewGuid()
         let (_, _, initialVersion) = sut.Add (key, "A") |> okValue
         sut.Update (key, "B", Some initialVersion) |> ignore

@@ -1,8 +1,8 @@
 ﻿namespace AD.InMemoryStore.Functional
 
-/// A thread-safe in-memory store with versioning.
-type InMemoryStore<'key, 'value> () =
-    let store = AD.InMemoryStore.InMemoryStore<'key, 'value> ()
+/// A thread-safe in-memory key-value store with optimistic concurrency support.
+type KeyValueStore<'key, 'value> () =
+    let store = AD.InMemoryStore.KeyValueStore<'key, 'value> ()
 
     /// Adds a new value.
     member _.Add (key, value) =
@@ -32,7 +32,7 @@ type InMemoryStore<'key, 'value> () =
             Ok (key, value, Version version)
         with
         | :? AD.InMemoryStore.KeyNotFoundException<'key> as exn -> Error (UpdateError.KeyNotFound exn.Key)
-        | :? AD.InMemoryStore.ConcurrencyException<'key> as exn -> Error (UpdateError.VersionMismatch exn.Key)
+        | :? AD.InMemoryStore.VersionMismatchException<'key> as exn -> Error (UpdateError.VersionMismatch exn.Key)
 
     /// Removes a value.
     member _.Remove (key, ``match``) =
@@ -41,4 +41,4 @@ type InMemoryStore<'key, 'value> () =
             Ok key
         with
         | :? AD.InMemoryStore.KeyNotFoundException<'key> as exn -> Error (RemoveError.KeyNotFound exn.Key)
-        | :? AD.InMemoryStore.ConcurrencyException<'key> as exn -> Error (RemoveError.VersionMismatch exn.Key)
+        | :? AD.InMemoryStore.VersionMismatchException<'key> as exn -> Error (RemoveError.VersionMismatch exn.Key)

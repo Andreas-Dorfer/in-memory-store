@@ -10,17 +10,18 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>Breaking rename: InMemoryStore to KeyValueStore</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="Version.fs" />
     <Compile Include="Errors.fs" />
-    <Compile Include="InMemoryStore.fs" />
+    <Compile Include="KeyValueStore.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AndreasDorfer.InMemoryStore" Version="1.0.1" />
+    <PackageReference Include="AndreasDorfer.InMemoryStore" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
