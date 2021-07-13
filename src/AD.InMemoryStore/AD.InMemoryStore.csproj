@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
     <PackageId>AndreasDorfer.InMemoryStore</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
 </Project>

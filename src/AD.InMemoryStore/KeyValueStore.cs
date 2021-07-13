@@ -6,11 +6,11 @@ using System.Linq;
 namespace AD.InMemoryStore
 {
     /// <summary>
-    /// A thread-safe in-memory store with versioning.
+    /// A thread-safe in-memory key-value store with optimistic concurrency support.
     /// </summary>
     /// <typeparam name="TKey">The identifying key's type.</typeparam>
     /// <typeparam name="TValue">The value's type.</typeparam>
-    public class InMemoryStore<TKey, TValue>
+    public class KeyValueStore<TKey, TValue>
         where TKey : notnull
     {
         readonly ConcurrentDictionary<TKey, Entry<TValue>> store = new();
@@ -55,12 +55,12 @@ namespace AD.InMemoryStore
         /// <param name="match">The version the value's current version has to match.</param>
         /// <returns>The updated value's version.</returns>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
-        /// <exception cref="ConcurrencyException{TKey}">Version mismatch.</exception>
+        /// <exception cref="VersionMismatchException{TKey}">Version mismatch.</exception>
         public Version Update(TKey key, TValue value, Version? match = null)
         {
             if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
             var next = compare.Next();
-            if (!Update(key, Entry<TValue>.Create(value, next), compare)) throw new ConcurrencyException<TKey>(key);
+            if (!Update(key, Entry<TValue>.Create(value, next), compare)) throw new VersionMismatchException<TKey>(key);
             return next;
         }
 
@@ -70,11 +70,11 @@ namespace AD.InMemoryStore
         /// <param name="key">The identifying key.</param>
         /// <param name="match">The version the value's current version has to match.</param>
         /// <exception cref="KeyNotFoundException{TKey}">The key doesn't exist.</exception>
-        /// <exception cref="ConcurrencyException{TKey}">Version mismatch.</exception>
+        /// <exception cref="VersionMismatchException{TKey}">Version mismatch.</exception>
         public void Remove(TKey key, Version? match = null)
         {
             if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
-            if (!Update(key, Entry<TValue>.Delete(), compare)) throw new ConcurrencyException<TKey>(key);
+            if (!Update(key, Entry<TValue>.Delete(), compare)) throw new VersionMismatchException<TKey>(key);
             store.TryRemove(key, out _);
         }
 

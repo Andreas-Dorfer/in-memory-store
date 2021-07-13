@@ -8,9 +8,9 @@ using System.Linq;
 namespace AD.InMemoryStore.Tests
 {
     [TestClass]
-    public class Tests
+    public class KeyValueStoreTests
     {
-        static Tests()
+        static KeyValueStoreTests()
         {
             Arb.Register(typeof(Generators));
         }
@@ -19,7 +19,7 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(DuplicateKeyException<Guid>))]
         public void Cannot_add_a_duplicate_key()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
 
             sut.Add(key, "A");
@@ -30,7 +30,7 @@ namespace AD.InMemoryStore.Tests
         public void Get() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                InMemoryStore<Guid, string> sut = new();
+                KeyValueStore<Guid, string> sut = new();
                 var expectedVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
                 var expectedValues = values.Zip(expectedVersions, (v, version) => (v.Value, version));
 
@@ -46,7 +46,7 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(KeyNotFoundException<Guid>))]
         public void Cannot_get_an_unknown_value()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var unknownId = Guid.NewGuid();
 
             sut.Get(unknownId);
@@ -56,7 +56,7 @@ namespace AD.InMemoryStore.Tests
         public void GetAll() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                InMemoryStore<Guid, string> sut = new();
+                KeyValueStore<Guid, string> sut = new();
                 var expectedValues = DoInParallel(values, v =>
                 {
                     var version = sut.Add(v.Key, v.Value);
@@ -75,7 +75,7 @@ namespace AD.InMemoryStore.Tests
         public void Update() =>
             Prop.ForAll<Dictionary<Guid, (string InitialValue, string UpdateValue)>>(values =>
             {
-                InMemoryStore<Guid, string> sut = new();
+                KeyValueStore<Guid, string> sut = new();
                 var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
 
                 var updateValues = values.Zip(initialVersions, (v, version) => (v.Key, v.Value.UpdateValue, Version: version));
@@ -93,17 +93,17 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(KeyNotFoundException<Guid>))]
         public void Cannot_update_an_unknown_value()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var unknownId = Guid.NewGuid();
 
             sut.Update(unknownId, "X");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ConcurrencyException<Guid>))]
+        [ExpectedException(typeof(VersionMismatchException<Guid>))]
         public void Update_with_version_check()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             var initialVersion = sut.Add(key, "A");
 
@@ -114,7 +114,7 @@ namespace AD.InMemoryStore.Tests
         [TestMethod]
         public void Update_with_no_version_check()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             sut.Add(key, "A");
             var expectedValue = "B";
@@ -129,7 +129,7 @@ namespace AD.InMemoryStore.Tests
         public void Remove() =>
             Prop.ForAll<Dictionary<Guid, string>>(values =>
             {
-                InMemoryStore<Guid, string> sut = new();
+                KeyValueStore<Guid, string> sut = new();
                 var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
 
                 var deleteValues = values.Zip(initialVersions, (v, version) => (v.Key, Version: version));
@@ -145,17 +145,17 @@ namespace AD.InMemoryStore.Tests
         [ExpectedException(typeof(KeyNotFoundException<Guid>))]
         public void Cannot_remove_an_unknown_value()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var unknownId = Guid.NewGuid();
 
             sut.Remove(unknownId);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ConcurrencyException<Guid>))]
+        [ExpectedException(typeof(VersionMismatchException<Guid>))]
         public void Remove_with_version_check()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             var initialVersion = sut.Add(key, "A");
 
@@ -166,7 +166,7 @@ namespace AD.InMemoryStore.Tests
         [TestMethod]
         public void Remove_with_no_version_check()
         {
-            InMemoryStore<Guid, string> sut = new();
+            KeyValueStore<Guid, string> sut = new();
             var key = Guid.NewGuid();
             var initialVersion = sut.Add(key, "A");
 

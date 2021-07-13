@@ -21,6 +21,10 @@
             return new(next > 0 ? next : 1);
         }
 
+        /// <summary>
+        /// Returns a textual representation.
+        /// </summary>
+        /// <returns>The version's textual representation.</returns>
         public override string ToString() =>
             '"' + Value.ToString() + '"';
     }

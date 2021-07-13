@@ -3,13 +3,13 @@
 namespace AD.InMemoryStore
 {
     /// <summary>
-    /// A <see cref="InMemoryStore{TKey, TValue}"/>'s exception.
+    /// A <see cref="KeyValueStore{TKey, TValue}"/>'s exception.
     /// </summary>
     /// <typeparam name="TKey">The identifying key's type.</typeparam>
-    public abstract class InMemoryStoreException<TKey> : Exception
+    public abstract class KeyValueStoreException<TKey> : Exception
         where TKey : notnull
     {
-        internal InMemoryStoreException(TKey key)
+        internal KeyValueStoreException(TKey key)
         {
             Key = key;
         }
@@ -24,7 +24,7 @@ namespace AD.InMemoryStore
     /// The key already exists.
     /// </summary>
     /// <typeparam name="TKey">The identifying key's type.</typeparam>
-    public class DuplicateKeyException<TKey> : InMemoryStoreException<TKey>
+    public class DuplicateKeyException<TKey> : KeyValueStoreException<TKey>
         where TKey : notnull
     {
         internal DuplicateKeyException(TKey key) : base(key)
@@ -35,7 +35,7 @@ namespace AD.InMemoryStore
     /// The key doesn't exist.
     /// </summary>
     /// <typeparam name="TKey">The identifying key's type.</typeparam>
-    public class KeyNotFoundException<TKey> : InMemoryStoreException<TKey>
+    public class KeyNotFoundException<TKey> : KeyValueStoreException<TKey>
         where TKey : notnull
     {
         internal KeyNotFoundException(TKey key) : base(key)
@@ -46,10 +46,10 @@ namespace AD.InMemoryStore
     /// Version mismatch.
     /// </summary>
     /// <typeparam name="TKey">The identifying key's type.</typeparam>
-    public class ConcurrencyException<TKey> : InMemoryStoreException<TKey>
+    public class VersionMismatchException<TKey> : KeyValueStoreException<TKey>
         where TKey : notnull
     {
-        internal ConcurrencyException(TKey key) : base(key)
+        internal VersionMismatchException(TKey key) : base(key)
         { }
     }
 }
