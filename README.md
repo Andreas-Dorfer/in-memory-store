@@ -2,14 +2,14 @@
 # AD.InMemoryStore
 A thread-safe in-memory key-value store with optimistic concurrency support. Great for testing / mocking and prototyping.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.0.1
+    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.1.0
 ### Namespace
 ```csharp
 using AD.InMemoryStore;
 ```
 ### Create a Store
 ```csharp
-InMemoryStore<int, string> store = new();
+KeyValueStore<int, string> store = new();
 ```
 ### Add a Value
 ```csharp
@@ -40,7 +40,7 @@ try
 {
     var newVersion = store.Update(key: 1, value: "B", match: version);
 }
-catch (ConcurrencyException<int> ex)
+catch (VersionMismatchException<int> ex)
 { }
 ```
 ### Update a Value with No Version Check
@@ -58,7 +58,7 @@ try
 {
     store.Remove(key: 1, match: version);
 }
-catch (ConcurrencyException<int> ex)
+catch (VersionMismatchException<int> ex)
 { }
 ```
 ### Remove a Value with No Version Check
@@ -75,14 +75,14 @@ catch (KeyNotFoundException<int> ex)
 # AD.InMemoryStore.Functional
 A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.0.1
+    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.1.0
 ### Namespace
 ```fsharp
 open AD.InMemoryStore.Functional
 ```
 ### Create a Store
 ```fsharp
-let store = InMemoryStore<int, string> ()
+let store = KeyValueStore<int, string> ()
 ```
 ### Add a Value
 ```fsharp
