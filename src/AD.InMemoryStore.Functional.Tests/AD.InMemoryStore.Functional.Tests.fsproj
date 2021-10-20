@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="KeyValueStoreTests.fs" />
+    <Compile Include="VersionTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
