@@ -11,8 +11,7 @@
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
     <PackageId>AndreasDorfer.InMemoryStore</PackageId>
-    <Version>1.1.0</Version>
-    <PackageReleaseNotes>Breaking renamings: InMemoryStore to KeyValueStore; InMemoryStoreException to KeyValueStoreException; ConcurrencyException to VersionMismatchException</PackageReleaseNotes>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
 </Project>
