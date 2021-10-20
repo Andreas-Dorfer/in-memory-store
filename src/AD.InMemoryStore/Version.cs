@@ -1,4 +1,6 @@
-﻿namespace AD.InMemoryStore
+﻿using System;
+
+namespace AD.InMemoryStore
 {
     /// <summary>
     /// A value's version.
@@ -27,5 +29,33 @@
         /// <returns>The version's textual representation.</returns>
         public override string ToString() =>
             '"' + Value.ToString() + '"';
+
+        /// <summary>
+        /// Converts a textual representation to a Version.
+        /// </summary>
+        /// <param name="text">The textual representation.</param>
+        /// <returns>The version.</returns>
+        public static Version Parse(string text) =>
+            TryParse(text, out var version) ? version : throw new ArgumentException("Invalid version.", nameof(text));
+
+        /// <summary>
+        /// Converts a textual representation to a Version.
+        /// </summary>
+        /// <param name="text">The textual representation.</param>
+        /// <param name="version">The version.</param>
+        /// <returns>True if the conversion was successful, otherwise false.</returns>
+        public static bool TryParse(string text, out Version version)
+        {
+            if (text is null ||
+                text.Length < 3 ||
+                !ulong.TryParse(text[1..^1], out var value))
+            {
+                version = default;
+                return false;
+            }
+
+            version = new(value);
+            return true;
+        }
     }
 }
