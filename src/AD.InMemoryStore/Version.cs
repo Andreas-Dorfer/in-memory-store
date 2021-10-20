@@ -35,6 +35,7 @@ namespace AD.InMemoryStore
         /// </summary>
         /// <param name="text">The textual representation.</param>
         /// <returns>The version.</returns>
+        /// <exception cref="ArgumentException">Invalid version.</exception>
         public static Version Parse(string text) =>
             TryParse(text, out var version) ? version : throw new ArgumentException("Invalid version.", nameof(text));
 
