@@ -11,7 +11,6 @@
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
     <Version>1.1.0</Version>
-    <PackageReleaseNotes>Breaking rename: InMemoryStore to KeyValueStore</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
