@@ -8,7 +8,7 @@ namespace AD.InMemoryStore.Tests
     {
         readonly KeyValueStore<int, string> store = new();
 
-        [TestMethod("To string and parse roundtrip.")]
+        [TestMethod("To string and parse round trip")]
         public void ToStringParse()
         {
             var expected = store.Add(1, "A");
