@@ -2,7 +2,7 @@
 # AD.InMemoryStore
 A thread-safe in-memory key-value store with optimistic concurrency support. Great for testing / mocking and prototyping.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.1.0
+    PM> Install-Package AndreasDorfer.InMemoryStore -Version 1.2.0
 ### Namespace
 ```csharp
 using AD.InMemoryStore;
@@ -75,7 +75,7 @@ catch (KeyNotFoundException<int> ex)
 # AD.InMemoryStore.Functional
 A functional wrapper around `AD.InMemoryStore`. Optimized for F#.
 ## NuGet Package
-    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.1.0
+    PM> Install-Package AndreasDorfer.InMemoryStore.Functional -Version 1.2.0
 ### Namespace
 ```fsharp
 open AD.InMemoryStore.Functional
