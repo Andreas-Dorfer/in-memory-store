@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace AD.InMemoryStore.Tests;
+﻿namespace AD.InMemoryStore.Tests;
 
 [TestClass]
 public class VersionTests

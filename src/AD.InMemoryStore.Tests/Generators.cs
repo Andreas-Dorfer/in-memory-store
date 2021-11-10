@@ -1,6 +1,4 @@
-﻿using FsCheck;
-
-namespace AD.InMemoryStore.Tests;
+﻿namespace AD.InMemoryStore.Tests;
 
 static class Generators
 {

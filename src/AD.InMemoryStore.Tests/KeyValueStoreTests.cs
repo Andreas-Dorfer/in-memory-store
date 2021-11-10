@@ -1,6 +1,3 @@
-using FsCheck;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace AD.InMemoryStore.Tests;
 
 [TestClass]
