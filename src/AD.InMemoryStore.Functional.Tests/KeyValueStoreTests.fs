@@ -120,6 +120,17 @@ type TestClass () =
         | Ok _ -> failErrorExpected ()
 
     [<TestMethod>]
+    member _.``KeyNotFound Error Update with version check`` () =
+        let sut = KeyValueStore<_, _> ()
+        let unknownKey = Guid.NewGuid()
+        let dummyVersion = "\"1\"" |> Version.parse
+        
+        match sut.Update (unknownKey, "X", dummyVersion) with
+        | Error (UpdateError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Error _ -> failNamedErrorExpected (nameof UpdateError.KeyNotFound)
+        | Ok _ -> failErrorExpected ()
+
+    [<TestMethod>]
     member _.``VersionMismatch Error Update`` () =
         let sut = KeyValueStore<_, _> ()
         let key = Guid.NewGuid()
@@ -155,6 +166,17 @@ type TestClass () =
         let unknownKey = Guid.NewGuid()
         
         match sut.Remove (unknownKey, None) with
+        | Error (RemoveError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Error _ -> failNamedErrorExpected (nameof RemoveError.KeyNotFound)
+        | Ok _ -> failErrorExpected ()
+
+    [<TestMethod>]
+    member _.``KeyNotFound Error Remove with version check`` () =
+        let sut = KeyValueStore<_, _> ()
+        let unknownKey = Guid.NewGuid()
+        let dummyVersion = "\"1\"" |> Version.parse
+        
+        match sut.Remove (unknownKey, dummyVersion) with
         | Error (RemoveError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Error _ -> failNamedErrorExpected (nameof RemoveError.KeyNotFound)
         | Ok _ -> failErrorExpected ()
