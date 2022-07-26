@@ -93,6 +93,17 @@ public class KeyValueStoreTests
     }
 
     [TestMethod]
+    [ExpectedException(typeof(KeyNotFoundException<Guid>))]
+    public void Cannot_update_an_unknonw_value_with_version_check()
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var unknownId = Guid.NewGuid();
+        var dummyVersion = Version.Parse("\"1\"");
+
+        sut.Update(unknownId, "X", dummyVersion);
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(VersionMismatchException<Guid>))]
     public void Update_with_version_check()
     {
@@ -142,6 +153,17 @@ public class KeyValueStoreTests
         var unknownId = Guid.NewGuid();
 
         sut.Remove(unknownId);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(KeyNotFoundException<Guid>))]
+    public void Cannot_remove_an_unknown_value_with_version_check()
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var unknownId = Guid.NewGuid();
+        var dummyVersion = Version.Parse("\"1\"");
+
+        sut.Remove(unknownId, dummyVersion);
     }
 
     [TestMethod]

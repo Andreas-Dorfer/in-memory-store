@@ -58,7 +58,15 @@ public class KeyValueStore<TKey, TValue>
     {
         if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
         var next = compare.Next();
-        if (!Update(key, Entry<TValue>.Create(value, next), compare)) throw new VersionMismatchException<TKey>(key);
+        if (!Update(key, Entry<TValue>.Create(value, next), compare))
+        {
+            if(Get(key, out var _))
+            {
+                throw new VersionMismatchException<TKey>(key);
+            }
+            throw new KeyNotFoundException<TKey>(key);
+        }
+
         return next;
     }
 
@@ -72,7 +80,15 @@ public class KeyValueStore<TKey, TValue>
     public void Remove(TKey key, Version? match = null)
     {
         if (!GetCompareVersion(key, match, out var compare)) throw new KeyNotFoundException<TKey>(key);
-        if (!Update(key, Entry<TValue>.Delete(), compare)) throw new VersionMismatchException<TKey>(key);
+        if (!Update(key, Entry<TValue>.Delete(), compare))
+        {
+            if (Get(key, out var _))
+            {
+                throw new VersionMismatchException<TKey>(key);
+            }
+            throw new KeyNotFoundException<TKey>(key);
+        }
+
         store.TryRemove(key, out _);
     }
 
