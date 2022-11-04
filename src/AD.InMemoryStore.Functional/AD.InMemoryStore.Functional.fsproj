@@ -10,10 +10,12 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
     <PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
-    <Version>1.3.1</Version>
+    <Version>1.3.2</Version>
+	<PackageIcon>ESD_512.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\AD.InMemoryStore\Resources\ESD_512.png" Link="Resources\ESD_512.png" Pack="true" PackagePath="\"/>
     <Compile Include="Version.fs" />
     <Compile Include="Errors.fs" />
     <Compile Include="KeyValueStore.fs" />
