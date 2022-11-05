@@ -19,21 +19,20 @@ public class KeyValueStoreTests
         sut.Add(key, "B");
     }
 
-    [TestMethod]
-    public void Get() =>
-        Prop.ForAll<Dictionary<Guid, string>>(values =>
+    [Property]
+    public void Get(Dictionary<Guid, string> values)
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var expectedVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+        var expectedValues = values.Zip(expectedVersions, (v, version) => (v.Value, version));
+
+        var actualValues = DoInParallel(values, v => sut.Get(v.Key));
+
+        foreach (var (expected, actual) in expectedValues.Zip(actualValues))
         {
-            KeyValueStore<Guid, string> sut = new();
-            var expectedVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
-            var expectedValues = values.Zip(expectedVersions, (v, version) => (v.Value, version));
-
-            var actualValues = DoInParallel(values, v => sut.Get(v.Key));
-
-            foreach (var (expected, actual) in expectedValues.Zip(actualValues))
-            {
-                Assert.AreEqual(expected, actual);
-            }
-        }).QuickCheckThrowOnFailure();
+            Assert.AreEqual(expected, actual);
+        }
+    }
 
     [TestMethod]
     [ExpectedException(typeof(KeyNotFoundException<Guid>))]
@@ -45,42 +44,40 @@ public class KeyValueStoreTests
         sut.Get(unknownId);
     }
 
-    [TestMethod]
-    public void GetAll() =>
-        Prop.ForAll<Dictionary<Guid, string>>(values =>
+    [Property]
+    public void GetAll(Dictionary<Guid, string> values)
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var expectedValues = DoInParallel(values, v =>
         {
-            KeyValueStore<Guid, string> sut = new();
-            var expectedValues = DoInParallel(values, v =>
-            {
-                var version = sut.Add(v.Key, v.Value);
-                return (v.Key, v.Value, version);
-            }).OrderBy(_ => _.Key);
+            var version = sut.Add(v.Key, v.Value);
+            return (v.Key, v.Value, version);
+        }).OrderBy(_ => _.Key);
 
-            var actualValues = sut.GetAll().OrderBy(_ => _.Key);
+        var actualValues = sut.GetAll().OrderBy(_ => _.Key);
 
-            foreach (var (expected, actual) in expectedValues.Zip(actualValues))
-            {
-                Assert.AreEqual(expected, actual);
-            }
-        }).QuickCheckThrowOnFailure();
-
-    [TestMethod]
-    public void Update() =>
-        Prop.ForAll<Dictionary<Guid, (string InitialValue, string UpdateValue)>>(values =>
+        foreach (var (expected, actual) in expectedValues.Zip(actualValues))
         {
-            KeyValueStore<Guid, string> sut = new();
-            var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
+            Assert.AreEqual(expected, actual);
+        }
+    }
 
-            var updateValues = values.Zip(initialVersions, (v, version) => (v.Key, v.Value.UpdateValue, Version: version));
-            Parallel.ForEach(updateValues, value =>
-            {
-                var updatedVersion = sut.Update(value.Key, value.UpdateValue, value.Version);
+    [Property]
+    public void Update(Dictionary<Guid, (string InitialValue, string UpdateValue)> values)
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value.InitialValue));
 
-                Assert.AreNotEqual(value.Version, updatedVersion);
-                var afterUpdate = sut.Get(value.Key);
-                Assert.AreEqual((value.UpdateValue, updatedVersion), afterUpdate);
-            });
-        }).QuickCheckThrowOnFailure();
+        var updateValues = values.Zip(initialVersions, (v, version) => (v.Key, v.Value.UpdateValue, Version: version));
+        Parallel.ForEach(updateValues, value =>
+        {
+            var updatedVersion = sut.Update(value.Key, value.UpdateValue, value.Version);
+
+            Assert.AreNotEqual(value.Version, updatedVersion);
+            var afterUpdate = sut.Get(value.Key);
+            Assert.AreEqual((value.UpdateValue, updatedVersion), afterUpdate);
+        });
+    }
 
     [TestMethod]
     [ExpectedException(typeof(KeyNotFoundException<Guid>))]
@@ -129,21 +126,20 @@ public class KeyValueStoreTests
         Assert.AreEqual(expectedValue, afterUpdate);
     }
 
-    [TestMethod]
-    public void Remove() =>
-        Prop.ForAll<Dictionary<Guid, string>>(values =>
+    [Property]
+    public void Remove(Dictionary<Guid, string> values)
+    {
+        KeyValueStore<Guid, string> sut = new();
+        var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+
+        var deleteValues = values.Zip(initialVersions, (v, version) => (v.Key, Version: version));
+        Parallel.ForEach(deleteValues, value =>
         {
-            KeyValueStore<Guid, string> sut = new();
-            var initialVersions = DoInParallel(values, v => sut.Add(v.Key, v.Value));
+            sut.Remove(value.Key, value.Version);
 
-            var deleteValues = values.Zip(initialVersions, (v, version) => (v.Key, Version: version));
-            Parallel.ForEach(deleteValues, value =>
-            {
-                sut.Remove(value.Key, value.Version);
-
-                Assert.ThrowsException<KeyNotFoundException<Guid>>(() => sut.Get(value.Key));
-            });
-        }).QuickCheckThrowOnFailure();
+            Assert.ThrowsException<KeyNotFoundException<Guid>>(() => sut.Get(value.Key));
+        });
+    }
 
     [TestMethod]
     [ExpectedException(typeof(KeyNotFoundException<Guid>))]

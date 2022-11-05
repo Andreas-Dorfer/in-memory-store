@@ -2,7 +2,7 @@ namespace AD.InMemoryStore.Functional.Tests
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
-open FsCheck
+open AD.FsCheck.MSTest
 open AD.InMemoryStore.Functional
 
 module TestClass =
@@ -29,7 +29,7 @@ module TestClass =
 open TestClass
 
 [<TestClass>]
-type TestClass () =
+type KeyValueStoreTests () =
 
     [<TestMethod>]
     member _.``Ok Add`` () =
@@ -72,22 +72,20 @@ type TestClass () =
         | Error (GetError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Ok _ -> failErrorExpected ()
 
-    [<TestMethod>]
-    member _.``GetAll`` () =
-        fun (values : Map<Guid, string>) ->
-            let sut = KeyValueStore<_, _> ()
-            let expected =
-                values
-                |> Map.toList
-                |> List.map (sut.Add >> okValue)
+    [<Property>]
+    member _.``GetAll`` (values : Map<Guid, string>) =
+        let sut = KeyValueStore<_, _> ()
+        let expected =
+            values
+            |> Map.toList
+            |> List.map (sut.Add >> okValue)
 
-            let actual = sut.GetAll ()
+        let actual = sut.GetAll ()
 
-            let sortByKey = List.sortBy (fun (key, _, _) -> key)
-            let expected = expected |> sortByKey
-            let actual = actual |> List.ofSeq |> sortByKey
-            Assert.AreEqual<_> (expected, actual)
-        |> Check.QuickThrowOnFailure
+        let sortByKey = List.sortBy (fun (key, _, _) -> key)
+        let expected = expected |> sortByKey
+        let actual = actual |> List.ofSeq |> sortByKey
+        Assert.AreEqual<_> (expected, actual)
 
     [<TestMethod>]
     member _.``Ok Update`` () =
