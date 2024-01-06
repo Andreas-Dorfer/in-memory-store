@@ -90,11 +90,23 @@ match store.Add(key = 1, value = "A") with
 | Ok (key, value, version) -> ()
 | Error (AddError.DuplicateKey key) -> ()
 ```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Add(key = 1, value = "A") with
+| Ok (key, value, version) -> ()
+| Error (ErrorKey key) -> ()
+```
 ### Get a Value
 ```fsharp
 match store.Get(key = 1) with
 | Ok (key, value, version) -> ()
 | Error (GetError.KeyNotFound key) -> ()
+```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Get(key = 1) with
+| Ok (key, value, version) -> ()
+| Error (ErrorKey key) -> ()
 ```
 ### Get all Values
 ```fsharp
@@ -110,6 +122,12 @@ match store.Update(key = 1, value = "B", ``match`` = Some version) with
     | UpdateError.VersionMismatch key -> ()
     | _ -> ()
 ```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Update(key = 1, value = "B", ``match`` = Some version) with
+| Ok (key, value, version) -> ()
+| Error (ErrorKey key) -> ()
+```
 ### Update a Value with No Version Check
 ```fsharp
 match store.Update(key = 1, value = "B", ``match`` = None) with
@@ -118,6 +136,12 @@ match store.Update(key = 1, value = "B", ``match`` = None) with
     match error with
     | UpdateError.KeyNotFound key -> ()
     | _ -> ()
+```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Update(key = 1, value = "B", ``match`` = None) with
+| Ok (key, value, version) -> ()
+| Error (ErrorKey key) -> ()
 ```
 ### Remove a Value
 ```fsharp
@@ -128,6 +152,12 @@ match store.Remove(key = 1, ``match`` = Some version) with
     | RemoveError.VersionMismatch key -> ()
     | _ -> ()
 ```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Remove(key = 1, ``match`` = Some version) with
+| Ok key -> ()
+| Error (ErrorKey key) -> ()
+```
 ### Remove a Value with No Version Check
 ```fsharp
 match store.Remove(key = 1, ``match`` = None) with
@@ -136,4 +166,10 @@ match store.Remove(key = 1, ``match`` = None) with
     match error with
     | RemoveError.KeyNotFound key -> ()
     | _ -> ()
+```
+Or if you don't care about the specific error type:
+```fsharp
+match store.Remove(key = 1, ``match`` = None) with
+| Ok key -> ()
+| Error (ErrorKey key) -> ()
 ```
