@@ -60,7 +60,7 @@ public sealed class KeyValueStore<TKey, TValue>
         var next = compare.Next();
         if (!Update(key, Entry<TValue>.Create(value, next), compare))
         {
-            if(Get(key, out var _))
+            if (Get(key, out var _))
             {
                 throw new VersionMismatchException<TKey>(key);
             }
