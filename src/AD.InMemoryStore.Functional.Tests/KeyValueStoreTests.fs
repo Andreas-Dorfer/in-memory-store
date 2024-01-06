@@ -53,6 +53,10 @@ type KeyValueStoreTests () =
         | Error (AddError.DuplicateKey errorKey) -> Assert.AreEqual<_> (key, errorKey)
         | Ok _ -> failErrorExpected ()
 
+        match sut.Add (key, "B") with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (key, errorKey)
+        | Ok _ -> failErrorExpected ()
+
     [<TestMethod>]
     member _.``Ok Get`` () =
         let sut = KeyValueStore<_, _> ()
@@ -70,6 +74,10 @@ type KeyValueStoreTests () =
 
         match sut.Get(unknownKey) with
         | Error (GetError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Ok _ -> failErrorExpected ()
+
+        match sut.Get(unknownKey) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Ok _ -> failErrorExpected ()
 
     [<Property>]
@@ -117,6 +125,10 @@ type KeyValueStoreTests () =
         | Error _ -> failNamedErrorExpected (nameof UpdateError.KeyNotFound)
         | Ok _ -> failErrorExpected ()
 
+        match sut.Update (unknownKey, "X", None) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Ok _ -> failErrorExpected ()
+
     [<TestMethod>]
     member _.``KeyNotFound Error Update with version check`` () =
         let sut = KeyValueStore<_, _> ()
@@ -126,6 +138,10 @@ type KeyValueStoreTests () =
         match sut.Update (unknownKey, "X", dummyVersion) with
         | Error (UpdateError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Error _ -> failNamedErrorExpected (nameof UpdateError.KeyNotFound)
+        | Ok _ -> failErrorExpected ()
+
+        match sut.Update (unknownKey, "X", dummyVersion) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Ok _ -> failErrorExpected ()
 
     [<TestMethod>]
@@ -138,6 +154,10 @@ type KeyValueStoreTests () =
         match sut.Update (key, "C", Some initialVersion) with
         | Error (UpdateError.VersionMismatch errorKey) -> Assert.AreEqual<_> (key, errorKey)
         | Error _ -> failNamedErrorExpected (nameof UpdateError.VersionMismatch)
+        | Ok _ -> failErrorExpected ()
+
+        match sut.Update (key, "C", Some initialVersion) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (key, errorKey)
         | Ok _ -> failErrorExpected ()
 
     [<TestMethod>]
@@ -168,6 +188,10 @@ type KeyValueStoreTests () =
         | Error _ -> failNamedErrorExpected (nameof RemoveError.KeyNotFound)
         | Ok _ -> failErrorExpected ()
 
+        match sut.Remove (unknownKey, None) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
+        | Ok _ -> failErrorExpected ()
+
     [<TestMethod>]
     member _.``KeyNotFound Error Remove with version check`` () =
         let sut = KeyValueStore<_, _> ()
@@ -177,6 +201,10 @@ type KeyValueStoreTests () =
         match sut.Remove (unknownKey, dummyVersion) with
         | Error (RemoveError.KeyNotFound errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Error _ -> failNamedErrorExpected (nameof RemoveError.KeyNotFound)
+        | Ok _ -> failErrorExpected ()
+
+        match sut.Remove (unknownKey, dummyVersion) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (unknownKey, errorKey)
         | Ok _ -> failErrorExpected ()
 
     [<TestMethod>]
@@ -189,4 +217,8 @@ type KeyValueStoreTests () =
         match sut.Remove (key, Some initialVersion) with
         | Error (RemoveError.VersionMismatch errorKey) -> Assert.AreEqual<_> (key, errorKey)
         | Error _ -> failNamedErrorExpected (nameof RemoveError.VersionMismatch)
+        | Ok _ -> failErrorExpected ()
+
+        match sut.Remove (key, Some initialVersion) with
+        | Error (ErrorKey errorKey) -> Assert.AreEqual<_> (key, errorKey)
         | Ok _ -> failErrorExpected ()
