@@ -8,7 +8,7 @@ namespace AD.InMemoryStore;
 /// </summary>
 /// <typeparam name="TKey">The identifying key's type.</typeparam>
 /// <typeparam name="TValue">The value's type.</typeparam>
-public class KeyValueStore<TKey, TValue>
+public sealed class KeyValueStore<TKey, TValue>
     where TKey : notnull
 {
     readonly ConcurrentDictionary<TKey, Entry<TValue>> store = new();

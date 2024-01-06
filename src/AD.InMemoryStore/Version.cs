@@ -21,6 +21,8 @@ public readonly struct Version
         return new(next > 0 ? next : 1);
     }
 
+    static readonly Range StringVersionRange = new(1, new Index(1, fromEnd: true));
+
     /// <summary>
     /// Returns a textual representation.
     /// </summary>
@@ -47,7 +49,7 @@ public readonly struct Version
     {
         if (text is null ||
             text.Length < 3 ||
-            !ulong.TryParse(text[1..^1], out var value))
+            !ulong.TryParse(text.AsSpan(StringVersionRange), out var value))
         {
             version = default;
             return false;

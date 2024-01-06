@@ -1,7 +1,7 @@
 ﻿namespace AD.InMemoryStore.Tests;
 
 [TestClass]
-public class VersionTests
+public sealed class VersionTests
 {
     readonly KeyValueStore<int, string> store = new();
 
