@@ -1,6 +1,6 @@
 ﻿namespace AD.InMemoryStore;
 
-class Entry<TValue>
+sealed class Entry<TValue>
 {
     public static Entry<TValue> Create(TValue value, Version version) => new() { Value = value, Version = version };
     public static Entry<TValue> Compare(Version version) => new() { Version = version };

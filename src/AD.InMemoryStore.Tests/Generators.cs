@@ -2,7 +2,7 @@
 
 static class Generators
 {
-    class ValueTupleArbitrary<T1, T2> : Arbitrary<(T1, T2)>
+    sealed class ValueTupleArbitrary<T1, T2> : Arbitrary<(T1, T2)>
     {
         public override Gen<(T1, T2)> Generator =>
             Arb.Generate<Tuple<T1, T2>>().Select(_ => _.ToValueTuple());

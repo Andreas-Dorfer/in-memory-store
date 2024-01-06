@@ -1,7 +1,7 @@
 namespace AD.InMemoryStore.Tests;
 
 [TestClass]
-public class KeyValueStoreTests
+public sealed class KeyValueStoreTests
 {
     static KeyValueStoreTests()
     {
