@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" Link="Resources/ESD_512.png" />
 	</ItemGroup>
 
 </Project>

@@ -11,6 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" Link="Resources/ESD_512.png" />
 		<Compile Include="Version.fs" />
 		<Compile Include="Errors.fs" />
 		<Compile Include="KeyValueStore.fs" />
@@ -22,10 +23,6 @@
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
 		<ProjectReference Include="..\AD.InMemoryStore\AD.InMemoryStore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
