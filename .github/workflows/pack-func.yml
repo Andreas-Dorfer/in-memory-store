@@ -24,7 +24,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./src
     - name: Build
-      run: dotnet build $testPrj --configuration Release --no-restore
+      run: dotnet build $testPrj --configuration Release
     - name: Test
       run: dotnet test $testPrj --configuration Release --no-build --verbosity normal
     - name: Pack
