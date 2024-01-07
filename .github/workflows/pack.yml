@@ -22,11 +22,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore $prj
+      run: dotnet restore ./src
     - name: Build
-      run: dotnet build $prj --configuration Release --no-restore
+      run: dotnet build $testPrj --configuration Release --no-restore
     - name: Test
-      run: dotnet test $testPrj --configuration Release --no-restore --verbosity normal
+      run: dotnet test $testPrj --configuration Release --no-build --verbosity normal
     - name: Pack
       run: dotnet pack $prj --configuration Release --no-build --output out
     - uses: actions/upload-artifact@v3
