@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
-    <PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
-    <PackageId>AndreasDorfer.InMemoryStore</PackageId>
-    <Version>1.4.0</Version>
-    <PackageIcon>ESD_512.png</PackageIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
+		<PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
+		<PackageId>AndreasDorfer.InMemoryStore</PackageId>
+		<Version>1.4.0</Version>
+		<PackageIcon>ESD_512.png</PackageIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="Resources\ESD_512.png" Pack="true" PackagePath="\"/>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

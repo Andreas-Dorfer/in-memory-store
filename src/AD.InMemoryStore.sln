@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{930881FD-8A39-44E6-8FAD-ED5F248AA2CE}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		ESD_512.png = ESD_512.png
 	EndProjectSection
 EndProject
 Global
