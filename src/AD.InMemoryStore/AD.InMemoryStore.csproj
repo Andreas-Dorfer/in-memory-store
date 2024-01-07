@@ -1,23 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>Andreas Dorfer</Authors>
-    <Company>Andreas Dorfer</Company>
-    <Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
-    <PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
-    <PackageId>AndreasDorfer.InMemoryStore</PackageId>
-    <Version>1.4.0</Version>
-    <PackageIcon>ESD_512.png</PackageIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
+		<PackageTags>C#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
+		<PackageId>AndreasDorfer.InMemoryStore</PackageId>
+		<Version>1.4.0</Version>
+		<PackageIcon>ESD_512.png</PackageIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="Resources\ESD_512.png" Pack="true" PackagePath="\"/>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" Link="Resources/ESD_512.png" />
+	</ItemGroup>
 
 </Project>

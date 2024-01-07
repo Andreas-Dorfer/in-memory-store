@@ -1,28 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <WarnOn>3390;$(WarnOn)</WarnOn>
-    <PackageId>AndreasDorfer.InMemoryStore.Functional</PackageId>
-    <Authors>Andreas Dorfer</Authors>
-    <Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/Andreas-Dorfer/in-memory-store</RepositoryUrl>
-    <PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
-    <Version>1.3.2</Version>
-	<PackageIcon>ESD_512.png</PackageIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<WarnOn>3390;$(WarnOn)</WarnOn>
+		<PackageId>AndreasDorfer.InMemoryStore.Functional</PackageId>
+		<Description>A thread-safe in-memory key-value store with optimistic concurrency support.</Description>
+		<PackageTags>F#, testing, mocking, prototyping, in-memory-store, key-value-store, optimistic-concurrency</PackageTags>
+		<Version>1.4.0</Version>
+		<PackageIcon>ESD_512.png</PackageIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\AD.InMemoryStore\Resources\ESD_512.png" Link="Resources\ESD_512.png" Pack="true" PackagePath="\" />
-    <Compile Include="Version.fs" />
-    <Compile Include="Errors.fs" />
-    <Compile Include="KeyValueStore.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\ESD_512.png" Pack="true" PackagePath="\" Link="Resources/ESD_512.png" />
+		<Compile Include="Version.fs" />
+		<Compile Include="Errors.fs" />
+		<Compile Include="KeyValueStore.fs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AndreasDorfer.InMemoryStore" Version="1.3.2" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'!='Debug'">
+		<PackageReference Include="AndreasDorfer.InMemoryStore" Version="1.4.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="..\AD.InMemoryStore\AD.InMemoryStore.csproj" />
+	</ItemGroup>
 
 </Project>
