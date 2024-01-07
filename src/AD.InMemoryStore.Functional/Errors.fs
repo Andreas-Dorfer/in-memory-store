@@ -1,10 +1,14 @@
 ﻿namespace AD.InMemoryStore.Functional
 
+/// Error key interface.
 type IErrorKey<'key> =
+    /// The error's key.
     abstract member Key: 'key
 
+/// Error key module.
 [<AutoOpen>]
 module ErrorKey =
+    /// Gets the error's key.
     let (|ErrorKey|) (error: IErrorKey<_>) = error.Key
 
 /// Error adding a new value.
