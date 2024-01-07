@@ -19,7 +19,8 @@ module TestClass =
         | Ok (actualKey, actualValue, actualVersion) ->
             Assert.AreEqual<_> (expectedKey, actualKey)
             Assert.AreEqual<_> (expectedValue, actualValue)
-            Assert.AreNotEqual<_> (initialVersion, actualVersion)
+            initialVersion
+            |> Option.iter (fun initialVersion -> Assert.AreNotEqual<_> (initialVersion, actualVersion))
         | Error _ -> failOkExpected ()
 
     let assertOkRemove expectedKey = function
@@ -103,7 +104,7 @@ type KeyValueStoreTests () =
         let expectedValue = "B"
 
         sut.Update (expectedKey, expectedValue, Some initialVersion)
-        |> assertOkUpdate
+        |> assertOkUpdate expectedKey expectedValue (Some initialVersion)
 
     [<TestMethod>]
     member _.``Ok Update with no version check`` () =
@@ -113,7 +114,7 @@ type KeyValueStoreTests () =
         let expectedValue = "B"
 
         sut.Update (expectedKey, expectedValue, None)
-        |> assertOkUpdate
+        |> assertOkUpdate expectedKey expectedValue None
 
     [<TestMethod>]
     member _.``KeyNotFound Error Update`` () =
